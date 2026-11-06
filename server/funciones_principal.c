@@ -103,22 +103,22 @@ int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_res
     int estado = ERROR;
 
     //puntero_cmd_servidor_t acciones_servidor[20] = {
-        //consultar_pac_id,      // 1: CMD_CONSULTAR_PAC_ID
-        //consultar_pac_nom,     // 2: CMD_CONSULTAR_PAC_NOM
-        //consultar_resp_id,     // 3: CMD_CONSULTAR_RESP_ID
-        //consultar_resp_nom,    // 4: CMD_CONSULTAR_RESP_NOM
-        //turno_pac_nom,         // 5: CMD_TURNO_PAC_NOM
+          ConsultarCoincidencias_PacienteID, //1: CMD_CONSULTAR_PAC_ID
+,    	  ConsultarCoincidencias_PacienteNombre,  // 2: CMD_CONSULTAR_PAC_NOM
+          ConsultarCoincidencias_ResponsableID,     // 3: CMD_CONSULTAR_RESP_ID
+          ConsultarCoincidencias_ResponsableNombre   // 4: CMD_CONSULTAR_RESP_NOM
+		  ConsultarCoincidencias_TurnoPacienteNombre         // 5: CMD_TURNO_PAC_NOM
         //turno_resp_nom,        // 6: CMD_TURNO_RESP_NOM
         //turno_fecha,           // 7: CMD_TURNO_FECHA
         //listado_pac,           // 8: CMD_LISTADO_PAC
         //listado_resp,          // 9: CMD_LISTADO_RESP
-        //agregar_turno,         // 10: CMD_AGREGAR_TURNO
-        //agregar_pac,           // 11: CMD_AGREGAR_PAC
-        //modificar_pac,         // 12: CMD_MODIFICAR_PAC
-        //eliminar_pac,          // 13: CMD_ELIMINAR_PAC
-        //agregar_resp,          // 14: CMD_AGREGAR_RESP
-        //modificar_resp,        // 15: CMD_MODIFICAR_RESP
-        //eliminar_resp,         // 16: CMD_ELIMINAR_RESP
+          agregar_turno,         // 10: CMD_AGREGAR_TURNO
+          agregar_paciente,           // 11: CMD_AGREGAR_PAC
+          modificar_paciente,         // 12: CMD_MODIFICAR_PAC
+          eliminar_paciente,          // 13: CMD_ELIMINAR_PAC
+          agregar_responsable,          // 14: CMD_AGREGAR_RESP
+          modificar_responsable,        // 15: CMD_MODIFICAR_RESP
+          eliminar_responsable,         // 16: CMD_ELIMINAR_RESP
         //mostrar_tipos,         // 17: CMD_MOSTRAR_TIPOS
         //agregar_tipo,          // 18: CMD_AGREGAR_TIPO
         //modificar_tipo,        // 19: CMD_MODIFICAR_TIPO
