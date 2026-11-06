@@ -24,11 +24,11 @@ BUILD_DIR     = build
 BIN_DIR       = bin
 VPATH         = MENU_1 MENU_3 MENU_4 MENU_5 .
 
-SOURCES       = mainPrincipal.c funciones_principal.c m1_desarrollodefunciones.c m1menu.c m3funciones.c m3menu.c m4funciones.c m4menu.c m5funciones.c m5menu.c
-OBJS          = mainPrincipal.o funciones_principal.o m1_desarrollodefunciones.o m1menu.o m3funciones.o m3menu.o m4funciones.o m4menu.o m5funciones.o m5menu.o
+SOURCES       = mainPrincipal.c funciones_principal.c m1_desarrollodefunciones.c m1menu.c m3funciones.c m3menu.c m4funciones.c m5funciones.c m5menu.c
+OBJS          = mainPrincipal.o funciones_principal.o m1_desarrollodefunciones.o m1menu.o m3funciones.o m3menu.o m4funciones.o m5funciones.o m5menu.o
 OBJS_PATHS    = $(addprefix $(BUILD_DIR)/, $(OBJS))
 
-EXEC          = veterinaria
+EXEC          = veterinaria_cliente
 
 ################################################################
 # TAR FILE INFORMATION                                         #
