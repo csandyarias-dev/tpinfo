@@ -28,38 +28,56 @@ typedef int (*p_menu4_t)(int);
 
 /**
 	\fn     int agregar_responsable(int socket_fd);
-	\brief  Envía los datos de un nuevo responsable al servidor.
+	\brief  Se agrega un responsable al servidor
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param int socket_fd
+	\return int estado
 */
 int agregar_responsable(int socket_fd);
 
+
 /**
-	\fn     int buscar_responsable_cliente(int socket_fd, responsable_t *resp_out);
-	\brief  Solicita al servidor la busqueda de un responsable por nombre o ID.
+	\fn    int buscar_responsable_cliente(int socket_fd, responsable_t *resp_out);
+	\brief  Se busca al responsable en el servidor
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param  int socket_fd, responsable_t *resp_out
+	\return int encontrado
 */
 int buscar_responsable_cliente(int socket_fd, responsable_t *resp_out);
 
+
 /**
 	\fn     int pedir_modificacion_resp(responsable_t * resp);
-	\brief  Pide por consola los nuevos datos del responsable a modificar.
+	\brief  Se pide modificar al responsable al servidor
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param  responsable_t * resp
+	\return int estado
 */
 int pedir_modificacion_resp(responsable_t * resp);
 
+
 /**
 	\fn     int modificarResponsable(int socket_fd);
-	\brief  Envía la solicitud de modificación al servidor.
+	\brief  Se modifica al responsable
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param  int socket_fd
+	\return int modificado
 */
 int modificarResponsable(int socket_fd);
 
+
 /**
 	\fn     int eliminarResponsable(int socket_fd);
-	\brief  Envía la solicitud de eliminación al servidor.
+	\brief  Se elimina al responsable
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param  int socket_fd
+	\return int eliminado
 */
 int eliminarResponsable(int socket_fd);
 
-/**
-	\fn     int m4menu(int client_socket_fd);
-	\brief  Ejecuta el menu 4 del lado del cliente.
-*/
-int m4menu(int client_socket_fd);
-
-#endif
+#endifnt socket_fd, respo

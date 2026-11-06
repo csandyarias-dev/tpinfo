@@ -43,68 +43,57 @@ enum OPCIONESM3{NOMBRE=1, FECHA_NACIMIENTO, ID_RESPONSABLE};
 
 
 /**
-	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
-	\brief  Se carga un paciente al archivo
+	\fn     int agregar_paciente(int socket_fd);
+	\brief  Se agrega un paciente al servidor
 	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
+	\date   2026.11.13
+	\param  int socket_fd
 	\return int estado
 */
 int agregar_paciente(int socket_fd);
 
 
 /**
-	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
-	\brief  Se carga un paciente al archivo
+	\fn     int buscar_paciente_cliente(int socket_fd, paciente_t *pac_out);
+	\brief  Se busca un paciente en el servidor
 	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
+	\date   2026.11.13
+	\param  int socket_fd, paciente_t *pac_out
+	\return int encontrado
 */
 int buscar_paciente_cliente(int socket_fd, paciente_t *pac_out);
 
 
 /**
-	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
-	\brief  Se carga un paciente al archivo
+	\fn     int pedir_modificacion_pac(paciente_t *pac);
+	\brief  Se pide la modificacion de un paciente
 	\author Grupo Las Marmotas
 	\date   2026.11.13
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
+	\param  paciente_t *pac
 	\return int estado
 */
 int pedir_modificacion_pac(paciente_t *pac);
 
 
 /**
-	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
-	\brief  Se carga un paciente al archivo
+	\fn     int modificar_paciente(int socket_fd);
+	\brief  Se modifica al paciente
 	\author Grupo Las Marmotas
 	\date   2026.11.13
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
+	\param  int socket_fd
+	\return int modificado
 */
 int modificar_paciente(int socket_fd);
 
 
 /**
-	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
-	\brief  Se carga un paciente al archivo
+	\fn     int eliminar_paciente(int socket_fd);
+	\brief  Se elimina un paciente del servidor
 	\author Grupo Las Marmotas
 	\date   2026.11.13
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
+	\param  int socket_fd
+	\return int eliminado
 */
 int eliminar_paciente(int socket_fd);
-
-
-/**
-	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
-	\brief  Se carga un paciente al archivo
-	\author Grupo Las Marmotas
-	\date   2026.11.13
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
-*/
-int m3menu(int client_socket_fd);
 
 #endif
