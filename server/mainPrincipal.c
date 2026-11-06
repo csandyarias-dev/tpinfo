@@ -13,7 +13,6 @@
 
 int flag_alarma = 0;
 
-
 int main(int argc, char *argv[]) {
     int port = 0, listen_fd = -1, client_fd = -1, client_len = 0, error = 0;
     int u_pac = 0, u_resp = 0, cant_tipos = 0, u_tipo = 0;
