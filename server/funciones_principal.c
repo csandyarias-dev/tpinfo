@@ -299,7 +299,7 @@ int importar_desde_archivo(int * ultimo_id_pac, int * ultimo_id_resp, nodo_pacie
 	\return  int estado
 */
 
-int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo){
+int agregar_turno(int client_fd, int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo){
 	int id = 0, estado = ERROR;
 	turnos_t nuevo; 
 	nodo_paciente_t * paciente = NULL; 
@@ -307,38 +307,34 @@ int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_respon
 	
 	if (recv(client_fd, &id, sizeof(int), 0) > 0) {
 		if(ConsultarCoincidencias_PacienteID(*pac, id, &paciente)){
-			nuevo.pacID = id;
-			nuevo.responID = paciente->paciente.responID;
+			estado=OK;
+			send(client_fd, &estado, sizeof(int), 0);
 		
-			printf("Ingrese la fecha siguiendo el siguiente formato: DIA-MES-ANIO: ");
-			scanf("%d-%d-%d", &dia, &mes, &anio);
-			nuevo.fecha.bits1.dia = dia;
-			nuevo.fecha.bits1.mes = mes;
-			nuevo.fecha.bits1.anio = anio;    
-		
-			printf("Ingrese la hora formato 12hs (01 a 12) de la siguiente forma HH:MM: ");
-			scanf("%d:%d", &hora, &min);
-			limpiar_buffer();
-			printf("Ingrese 0 para AM o 1 para PM: ");
-			leer_entero(&am_pm);
-
-			nuevo.hora.bits.hora = hora;
-			nuevo.hora.bits.min = min;
-			nuevo.hora.bits.am_pm = am_pm;
-		
-			if (es_fecha_valida(nuevo.fecha) && es_hora_valida(hora, min, am_pm)) {
+			if (recv(client_fd, &nuevo, sizeof(turnos_t), 0)>0) {
 				if (aniadir_ordenado_t(turnos, nuevo) == OK)
 				{
-					 printf("Turno agregado con exito");
-					 estado = OK;
+					estado = OK;
+					send(client_fd, &estado, sizeof(int), 0);
 				}
-				else estado = ERROR;
-			} else {
-				printf("\n Fecha u hora invalida\n");
-			}
+				else {
+					estado=ERROR_MEMORIA;
+					send(client_fd, &estado, sizeof(int), 0);
+				}
+			} 
+			else {
+					estado=ERROR_CONEXION;
+					send(client_fd, &estado, sizeof(int), 0);
+				}
 		}
-		else printf("\n Paciente no encontrado\n");
-	} else printf("ID invalido");	
+		else {
+			estado=NO_ENCONTRADO;
+			send(client_fd, &estado, sizeof(int), 0);
+		}
+	} 
+	else {
+		estado=NO_ENCONTRADO;
+		send(client_fd, &estado, sizeof(int), 0);
+	}
  return estado;
 }
 	
