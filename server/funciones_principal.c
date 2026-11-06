@@ -305,11 +305,7 @@ int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_respon
 	nodo_paciente_t * paciente = NULL; 
 	int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0;
 	
-	printf("Ingrese el ID del paciente: ");
-	if(leer_entero(&id)){ 
-
-		printf("Paciente seleccionado:\n");
-		
+	if (recv(client_fd, &id, sizeof(int), 0) > 0) {
 		if(ConsultarCoincidencias_PacienteID(*pac, id, &paciente)){
 			nuevo.pacID = id;
 			nuevo.responID = paciente->paciente.responID;
