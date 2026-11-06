@@ -85,7 +85,7 @@ int conectar_servidor(char *ip, int server_port) {
 */
 
 int agregar_turno(int socket_fd){
-	int id = 0, estado = ERROR, cmd = 0, coincidencias = 0;
+	int id = 0, estado = ERROR, cmd = 0, coincidencias = 0, estado=0;
 	turnos_t nuevo; 
 	paciente_t * paciente = NULL; 
 	int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0;
@@ -97,7 +97,7 @@ int agregar_turno(int socket_fd){
 		
 		cmd = CMD_CONSULTAR_PAC_ID;
         send(socket_fd, &cmd, sizeof(int), 0);
-        send(socket_fd, id, sizeof(int), 0);
+        send(socket_fd, &id, sizeof(int), 0);
         recv(socket_fd, &coincidencias, sizeof(int), 0);
                
         if (coincidencias == 1) {
@@ -126,9 +126,9 @@ int agregar_turno(int socket_fd){
 			if (es_fecha_valida(nuevo.fecha) && es_hora_valida(hora, min, am_pm)){
 				cmd = CMD_AGREGAR_TURNO;
 				send(socket_fd, &cmd, sizeof(int), 0);
-				send(socket_fd, id, sizeof(int), 0);
+				send(socket_fd, &nuevo, sizeof(turnos_t), 0);
 				
-				if(recv(socket_fd, &coincidencias, sizeof(int), 0)==OK)
+				if(recv(socket_fd, &estado, sizeof(int), 0)==OK)
 				{
 					 printf("Turno agregado con exito");
 					 estado = OK;
