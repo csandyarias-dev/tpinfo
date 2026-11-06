@@ -85,7 +85,7 @@ int conectar_servidor(char *ip, int server_port) {
 */
 
 int agregar_turno(int socket_fd){
-	int id = 0, estado = ERROR, cmd = 0, coincidencias = 0, estado=0;
+	int id = 0, estado = ERROR, cmd = 0, coincidencias = 0;
 	turnos_t nuevo; 
 	paciente_t * paciente = NULL; 
 	int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0;
