@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 int main(int cant, char *argv[]) {
-    int continuar = OK, entrada = 0, server_port = 0, int cmd_salir=CMD_SALIR;
+    int continuar = OK, entrada = 0, server_port = 0, cmd_salir=CMD_SALIR;
     int client_socket_fd = -1;
     char ip_servidor[30] = {0};
     puntero_menu_principal_t menu_principal[5] = {m1menu, agregar_turno, m3menu, m4menu, m5menu};

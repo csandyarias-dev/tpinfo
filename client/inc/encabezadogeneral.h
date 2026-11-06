@@ -154,10 +154,10 @@ int m5menu(int client_socket_fd);
 //-- Includes --
 //--------------
 
-#include "inc/m1funciones.h"
-#include "inc/m3funciones.h"
-#include "inc/m4funciones.h"
-#include "inc/m5funciones.h"
+#include "m1funciones.h"
+#include "m3funciones.h"
+#include "m4funciones.h"
+#include "m5funciones.h"
 
 
 //----------------

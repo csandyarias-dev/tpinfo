@@ -28,7 +28,7 @@ int obtener_ip_puerto(int cant, char *argv[], char *ip, int *puerto) {
             error = 1;
         }
     } 
-    else if (argc == 3) {
+    else if (cant == 3) {
         strcpy(ip, argv[1]);
         *puerto = atoi(argv[2]);
         if (*puerto == 0) {
@@ -78,14 +78,14 @@ int conectar_servidor(char *ip, int server_port) {
 /**
 	\fn      int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo)
 	\brief   agrega un turno
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\author  TP Las Marmotas
+	\date    2026.11.13
 	\param   int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo
 	\return  int estado
 */
 
-int agregar_turno(int client_socket_fd){
-	int id = 0, estado = ERROR;
+int agregar_turno(int socket_fd){
+	int id = 0, estado = ERROR, cmd = 0, coincidencias = 0;
 	turnos_t nuevo; 
 	paciente_t * paciente = NULL; 
 	int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0;
@@ -123,7 +123,7 @@ int agregar_turno(int client_socket_fd){
 			nuevo.hora.bits.min = min;
 			nuevo.hora.bits.am_pm = am_pm;
 		
-			if (es_fecha_valida(nuevo.fecha) && es_hora_valida(hora, min, am_pm){
+			if (es_fecha_valida(nuevo.fecha) && es_hora_valida(hora, min, am_pm)){
 				cmd = CMD_AGREGAR_TURNO;
 				send(socket_fd, &cmd, sizeof(int), 0);
 				send(socket_fd, id, sizeof(int), 0);
