@@ -1,78 +1,65 @@
 /**
-	\file    m4funciones.h
-	\brief   Contienen las funciones pertenecientes al menu 4
+	\file    m4funciones_cliente.h
+	\brief   Contienen las funciones pertenecientes al menu 4 para el CLIENTE
 	\author  Grupo las marmotas
 	\date    2026.09.02
 	\version 1.0.0
 */
 
-#ifndef MENU4_H
-#define MENU4_H
+#ifndef MENU4_CLIENTE_H
+#define MENU4_CLIENTE_H
 
 //--------------
 //-- Includes --
 //--------------
 
-//#include "encabezadogeneral.h"
-
+#include "encabezadogeneral.h"
 
 //--------------
 //-- typedef --
 //--------------
-typedef int (*p_menu4_t)(nodo_responsable_t **, int *);
+
+typedef int (*p_menu4_t)(int);
+
 
 //----------------
 //-- Prototipos --
 //----------------
 
 /**
-	\fn     int agregar_responsable(nodo_responsable_t ** primero, int * ultimo_ID_utilizado);
-	\brief  Se agrega un responsable a la lista
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  void 
-	\return int estado
+	\fn     int agregar_responsable(int socket_fd);
+	\brief  Envía los datos de un nuevo responsable al servidor.
 */
-int agregar_responsable(nodo_responsable_t ** primero, int * ultimo_ID_utilizado);
+int agregar_responsable(int socket_fd);
 
 /**
-	\fn     int anadirordenado_r(nodo_responsable_t ** primero, responsable_t nuevo);
-	\brief  Se añade a la lista el nuevo responsable 
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  void 
-	\return int estado
+	\fn     int buscar_responsable_cliente(int socket_fd, responsable_t *resp_out);
+	\brief  Solicita al servidor la busqueda de un responsable por nombre o ID.
 */
-int anadirordenado_r(nodo_responsable_t ** primero, responsable_t nuevo);
+int buscar_responsable_cliente(int socket_fd, responsable_t *resp_out);
 
 /**
-	\fn     int modificarResponsable(nodo_responsable_t ** primero);
-	\brief  Se modifica un responsable de la lista 
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  void 
-	\return int estado
+	\fn     int pedir_modificacion_resp(responsable_t * resp);
+	\brief  Pide por consola los nuevos datos del responsable a modificar.
 */
-int modificarResponsable(nodo_responsable_t ** primero, int * ultimo_ID_utilizado);
+int pedir_modificacion_resp(responsable_t * resp);
 
 /**
-	\fn     int modificar_nodo_r(nodo_responsable_t * actual, nodo_responsable_t ** lista);
-	\brief  Se modifica un responsable del nodo
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  nodo_responsable_t * actual, nodo_responsable_t ** lista
-	\return int estado
+	\fn     int modificarResponsable(int socket_fd);
+	\brief  Envía la solicitud de modificación al servidor.
 */
-int modificar_nodo_r(nodo_responsable_t * actual, nodo_responsable_t ** lista);
+int modificarResponsable(int socket_fd);
 
 /**
-	\fn     int eliminarResponsable(nodo_responsable_t ** primero);
-	\brief  Se elimina un paciente de la lista 
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  void 
-	\return int estado
+	\fn     int eliminarResponsable(int socket_fd);
+	\brief  Envía la solicitud de eliminación al servidor.
 */
-int eliminarResponsable(nodo_responsable_t ** primero, int * ultimo_ID_utilizado);
+int eliminarResponsable(int socket_fd);
+
+/**
+	\fn     int m4menu(int client_socket_fd);
+	\brief  Ejecuta el menu 4 del lado del cliente.
+*/
+int m4menu(int client_socket_fd);
 
 #endif

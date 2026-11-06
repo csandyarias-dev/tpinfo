@@ -1,78 +1,52 @@
 /**
-	\file    m4funciones.h
-	\brief   Contienen las funciones pertenecientes al menu 4
+	\file    m4funciones_servidor.h
+	\brief   Contienen las funciones pertenecientes al menu 4 para el SERVIDOR
 	\author  Grupo las marmotas
 	\date    2026.09.02
 	\version 1.0.0
 */
 
-#ifndef MENU4_H
-#define MENU4_H
+#ifndef MENU4_SERVIDOR_H
+#define MENU4_SERVIDOR_H
 
 //--------------
 //-- Includes --
 //--------------
 
-//#include "encabezadogeneral.h"
-
-
-//--------------
-//-- typedef --
-//--------------
-typedef int (*p_menu4_t)(nodo_responsable_t **, int *);
+#include "encabezadogeneral.h"
 
 //----------------
 //-- Prototipos --
 //----------------
 
 /**
-	\fn     int agregar_responsable(nodo_responsable_t ** primero, int * ultimo_ID_utilizado);
-	\brief  Se agrega un responsable a la lista
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  void 
-	\return int estado
+	\fn     int agregar_responsable(int client_fd, nodo_responsable_t **lista, int *ultimo_id);
+	\brief  Recibe los datos del cliente y agrega el responsable a la lista dinámica.
 */
-int agregar_responsable(nodo_responsable_t ** primero, int * ultimo_ID_utilizado);
+int agregar_responsable(int client_fd, nodo_responsable_t **lista, int *ultimo_id);
 
 /**
-	\fn     int anadirordenado_r(nodo_responsable_t ** primero, responsable_t nuevo);
-	\brief  Se añade a la lista el nuevo responsable 
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  void 
-	\return int estado
+	\fn     int anadirordenado_r(nodo_responsable_t ** primero, responsable_t nuevo_resp);
+	\brief  Añade el responsable a la lista enlazada manteniendo el orden alfabético.
 */
-int anadirordenado_r(nodo_responsable_t ** primero, responsable_t nuevo);
+int anadirordenado_r(nodo_responsable_t ** primero, responsable_t nuevo_resp);
 
 /**
-	\fn     int modificarResponsable(nodo_responsable_t ** primero);
-	\brief  Se modifica un responsable de la lista 
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  void 
-	\return int estado
+	\fn     int modificarResponsable(int client_fd, nodo_responsable_t **lista);
+	\brief  Recibe los datos a modificar, reubica el nodo en la lista y responde al cliente.
 */
-int modificarResponsable(nodo_responsable_t ** primero, int * ultimo_ID_utilizado);
+int modificarResponsable(int client_fd, nodo_responsable_t **lista);
 
 /**
-	\fn     int modificar_nodo_r(nodo_responsable_t * actual, nodo_responsable_t ** lista);
-	\brief  Se modifica un responsable del nodo
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  nodo_responsable_t * actual, nodo_responsable_t ** lista
-	\return int estado
+	\fn     int eliminar_nodo_r(nodo_responsable_t ** lista, nodo_responsable_t * actual);
+	\brief  Libera la memoria de un nodo específico y reconecta la lista.
 */
-int modificar_nodo_r(nodo_responsable_t * actual, nodo_responsable_t ** lista);
+int eliminar_nodo_r(nodo_responsable_t ** lista, nodo_responsable_t * actual);
 
 /**
-	\fn     int eliminarResponsable(nodo_responsable_t ** primero);
-	\brief  Se elimina un paciente de la lista 
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  void 
-	\return int estado
+	\fn     int eliminarResponsable(int client_fd, nodo_responsable_t **lista);
+	\brief  Recibe el ID a eliminar, borra el nodo y responde al cliente.
 */
-int eliminarResponsable(nodo_responsable_t ** primero, int * ultimo_ID_utilizado);
+int eliminarResponsable(int client_fd, nodo_responsable_t **lista);
 
 #endif
