@@ -14,7 +14,7 @@
 //-- Defines --
 //--------------
 
-#define ARCH_CLIENTE "cfg/client.cfg"
+extern int flag_alarma;
 
 //-------------
 //-- Structs --
@@ -133,37 +133,45 @@ enum COMANDOS_SOCKET {
 #define CONSULTAR_INFORMACION 1
 #define MENU_CONFIGURACION 5
 #define SALIR 6
-
-//-----------------------------------------
-//-- typedef puntero a funcion principal --
-//-----------------------------------------
-
-typedef int (*puntero_menu_principal_t)(int client_socket_fd);
-
-//-------------------------------
-//-- prototipos de los 5 menus --
-//-------------------------------
-
-int m1menu(int client_socket_fd);
-int agregar_turno(int client_socket_fd);
-int m3menu(int client_socket_fd);
-int m4menu(int client_socket_fd);
-int m5menu(int client_socket_fd);
+#define BACKLOG 10
 
 //--------------
 //-- Includes --
 //--------------
 
-#include "inc/m1funciones.h"
-#include "inc/m3funciones.h"
-#include "inc/m4funciones.h"
-#include "inc/m5funciones.h"
+#include "m1funciones.h"
+#include "m3funciones.h"
+#include "m4funciones.h"
+#include "m5funciones.h"
 
 
 //----------------
 //-- Prototipos --
 //----------------
 
+/**
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
+	\author Grupo Las Marmotas
+	\date   2026.09.02
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
+	\return int estado
+*/
+
+int iniciar_socket_servidor(int port);
+
+/**
+	\fn     void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
+	\brief  Se carga un paciente al archivo
+	\author Grupo Las Marmotas
+	\date   2026.09.02
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
+	\return int estado
+*/
+void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
+
+int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
 /**
 	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
 	\brief  Se carga un paciente al archivo

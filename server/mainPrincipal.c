@@ -7,7 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <signal.h>
-#include "encabezadogeneral.h"
+#include "inc/encabezadogeneral.h"
 
 #define BACKLOG 10
 

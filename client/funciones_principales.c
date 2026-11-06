@@ -1,4 +1,14 @@
+#include "inc/encabezadogeneral.h"
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 
 int obtener_ip_puerto(int cant, char *argv[], char *ip, int *puerto) {
     FILE *fp = NULL;
