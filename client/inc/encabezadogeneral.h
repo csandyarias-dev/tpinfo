@@ -168,15 +168,32 @@ int m5menu(int client_socket_fd);
 	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
 	\brief  Se carga un paciente al archivo
 	\author Grupo Las Marmotas
-	\date   2026.09.02
+	\date   2026.11.13
 	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
 	\return int estado
 */
-
 int obtener_ip_puerto(int cant, char *argv[], char *ip, int *puerto);
 
+
+/**
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
+	\return int estado
+*/
 int conectar_servidor(char *ip, int server_port);
 
+
+/**
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
+	\return int estado
+*/
 int agregar_turno(int client_socket_fd);
 	
 #endif	

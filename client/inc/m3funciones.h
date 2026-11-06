@@ -21,7 +21,7 @@
 //-- typedef --
 //--------------
 
-typedef int (*p_menu3_t)(nodo_paciente_t **, int *, tipopac_t ** tipos, int * cant_t, int * u_tipo);
+typedef int (*p_menu3_t)(int);
 
 //--------------
 //-- Defines --
@@ -41,65 +41,70 @@ enum OPCIONESM3{NOMBRE=1, FECHA_NACIMIENTO, ID_RESPONSABLE};
 //-- Prototipos --
 //----------------
 
+
 /**
-	\fn     int agregarPaciente(nodo_paciente_t ** primero, int * ultimo_ID_utilizado);
-	\brief  Se agrega un paciente a la lista
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
 	\author Grupo Las Marmotas
 	\date   2026.09.02
-	\param  nodo_paciente_t ** primero, int * ultimo_ID_utilizado
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
 	\return int estado
 */
-int agregar_paciente(nodo_paciente_t ** primero, int * ultimo_ID_utilizado, tipopac_t ** tipos, int * cant_t, int * u_tipo);
+int agregar_paciente(int socket_fd);
+
 
 /**
-	\fn     int anadir_ordenado(nodo_paciente_t ** primero, paciente_t nuevo);
-	\brief  Se añade a la lista el nuevo paciente 
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
 	\author Grupo Las Marmotas
 	\date   2026.09.02
-	\param  nodo_paciente_t ** primero, paciente_t nuevo
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
 	\return int estado
 */
-int anadir_ordenado_p(nodo_paciente_t ** primero, paciente_t nuevo);
+int buscar_paciente_cliente(int socket_fd, paciente_t *pac_out);
+
 
 /**
-	\fn     int modificarPaciente(nodo_paciente_t ** primero);
-	\brief  Se modifica un paciente de la lista 
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
 	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  nodo_paciente_t ** primero
+	\date   2026.11.13
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
 	\return int estado
 */
-int modificar_paciente(nodo_paciente_t ** primero, int * ultimo_ID_utilizado, tipopac_t ** tipos, int * cant_t, int * u_tipo);
+int pedir_modificacion_pac(paciente_t *pac);
+
 
 /**
-	\fn     int modificarNodo(nodo_paciente_t ** elegido);
-	\brief  Se modifica un paciente de la lista 
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
 	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  nodo_paciente_t ** elegido 
+	\date   2026.11.13
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
 	\return int estado
 */
-int modificar_nodo(nodo_paciente_t * actual, nodo_paciente_t ** lista);
+int modificar_paciente(int socket_fd);
+
 
 /**
-	\fn     int eliminarPaciente(nodo_paciente_t ** primero);
-	\brief  Se elimina un paciente de la lista 
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
 	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  nodo_paciente_t ** primero
+	\date   2026.11.13
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
 	\return int estado
 */
-int eliminar_paciente(nodo_paciente_t ** primero, int * ultimo_ID_utilizado, tipopac_t ** tipos, int * cant_t, int * u_tipo);
+int eliminar_paciente(int socket_fd);
+
 
 /**
-	\fn     int eliminar_nodo(nodo_paciente_t ** lista, nodo_paciente_t * actual, nodo_paciente_t * anterior)
-	\brief  Se elimina un nodo de la lista
+	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
+	\brief  Se carga un paciente al archivo
 	\author Grupo Las Marmotas
-	\date   2026.09.30
-	\param  nodo_paciente_t ** lista, nodo_paciente_t * actual, nodo_paciente_t * anterior
+	\date   2026.11.13
+	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
 	\return int estado
 */
-int eliminar_nodo(nodo_paciente_t ** lista, nodo_paciente_t * actual); 
-
+int m3menu(int client_socket_fd);
 
 #endif
