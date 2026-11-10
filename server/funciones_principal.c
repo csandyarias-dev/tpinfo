@@ -102,28 +102,28 @@ void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **p
 int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo) {
     int estado = ERROR;
 
-    //puntero_cmd_servidor_t acciones_servidor[20] = {
-          ConsultarCoincidencias_PacienteID, //1: CMD_CONSULTAR_PAC_ID
-,    	  ConsultarCoincidencias_PacienteNombre,  // 2: CMD_CONSULTAR_PAC_NOM
-          ConsultarCoincidencias_ResponsableID,     // 3: CMD_CONSULTAR_RESP_ID
-          ConsultarCoincidencias_ResponsableNombre   // 4: CMD_CONSULTAR_RESP_NOM
-		  ConsultarCoincidencias_TurnoPacienteNombre         // 5: CMD_TURNO_PAC_NOM
-        //turno_resp_nom,        // 6: CMD_TURNO_RESP_NOM
-        //turno_fecha,           // 7: CMD_TURNO_FECHA
-        //listado_pac,           // 8: CMD_LISTADO_PAC
-        //listado_resp,          // 9: CMD_LISTADO_RESP
-          agregar_turno,         // 10: CMD_AGREGAR_TURNO
-          agregar_paciente,           // 11: CMD_AGREGAR_PAC
-          modificar_paciente,         // 12: CMD_MODIFICAR_PAC
-          eliminar_paciente,          // 13: CMD_ELIMINAR_PAC
-          agregar_responsable,          // 14: CMD_AGREGAR_RESP
-          modificar_responsable,        // 15: CMD_MODIFICAR_RESP
-          eliminar_responsable,         // 16: CMD_ELIMINAR_RESP
-        //mostrar_tipos,         // 17: CMD_MOSTRAR_TIPOS
-        //agregar_tipo,          // 18: CMD_AGREGAR_TIPO
-        //modificar_tipo,        // 19: CMD_MODIFICAR_TIPO
-        //borrar_tipo            // 20: CMD_BORRAR_TIPO
-    //};
+    puntero_cmd_servidor_t acciones_servidor[20] = {
+        ConsultarCoincidencias_PacienteID,        // 1: CMD_CONSULTAR_PAC_ID
+        ConsultarCoincidencias_PacienteNombre,    // 2: CMD_CONSULTAR_PAC_NOM
+        ConsultarCoincidencias_ResponsableID,     // 3: CMD_CONSULTAR_RESP_ID
+        ConsultarCoincidencias_ResponsableNombre, // 4: CMD_CONSULTAR_RESP_NOM
+        ConsultarTurnos_PacienteNombre,           // 5: CMD_TURNO_PAC_NOM
+        ConsultarTurnos_ResponsableNombre,        // 6: CMD_TURNO_RESP_NOM
+        ConsultarTurnos_Fecha,                    // 7: CMD_TURNO_FECHA
+        MostrarListadoCompletoPacientes,          // 8: CMD_LISTADO_PAC
+        MostrarListadoCompletoResponsables,       // 9: CMD_LISTADO_RESP
+        agregar_turno,         // 10: CMD_AGREGAR_TURNO
+        agregar_paciente,           // 11: CMD_AGREGAR_PAC
+        modificar_paciente,         // 12: CMD_MODIFICAR_PAC
+        eliminar_paciente,          // 13: CMD_ELIMINAR_PAC
+        agregar_responsable,          // 14: CMD_AGREGAR_RESP
+        modificar_responsable,        // 15: CMD_MODIFICAR_RESP
+        eliminar_responsable,         // 16: CMD_ELIMINAR_RESP
+        mostrar_tipos_animales,         // 17: CMD_MOSTRAR_TIPOS
+        agregar_tipo_animal,          // 18: CMD_AGREGAR_TIPO
+        modificar_tipo_animal,        // 19: CMD_MODIFICAR_TIPO
+        borrar_tipo_animal            // 20: CMD_BORRAR_TIPO
+    };
 
     if (comando >= CMD_CONSULTAR_PAC_ID && comando <= CMD_BORRAR_TIPO) {
         //estado = acciones_servidor[comando - 1](client_fd, u_pac, u_resp, pac, resp, tur, tipos, cant_t, u_tipo);

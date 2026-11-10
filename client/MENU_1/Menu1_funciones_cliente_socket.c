@@ -1,0 +1,466 @@
+/**
+	\file    Menu1_funciones_cliente_socket.c
+	\brief   Funciones del cliente (Menu 1) con socket. Aca va TODO printf/scanf.
+	\author  Las Marmotas
+	\version 2.0.0
+*/
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include "../inc/encabezadogeneral.h"
+
+#define MAX_LETRAS_NOMBRE 30
+#define MAX_CARACTERES_FECHA 11
+
+#ifndef RECORRIENDO
+#define RECORRIENDO 1
+#define FIN 0
+#endif
+
+//-------------------------------------------------------------
+// Funciones de impresion: mismos nombres que el original. Como el cliente recibe la
+// estructura (no el nodo), el parametro "actual" pasa a ser un puntero a la estructura.
+//-------------------------------------------------------------
+
+void mostrar_paciente(const paciente_t * actual) {
+    if (actual != NULL) {
+        printf("ID: %d | Nombre: %s | Nacimiento: %02d-%02d-%04d | Resp ID: %d\n",
+            actual->pacID,
+            actual->nombre,
+            actual->nacimiento.bits1.dia,
+            actual->nacimiento.bits1.mes,
+            actual->nacimiento.bits1.anio,
+            actual->responID);
+    }
+}
+
+void mostrar_responsable(const responsable_t * actual) {
+    if (actual != NULL) {
+        printf("Resp ID: %d | Nombre: %s %s | Tel: %lu\n",
+            actual->responID,
+            actual->nombre,
+            actual->apellido,
+            actual->telcont);
+    }
+}
+
+void imprimir_fecha(nfecha_t f) {
+    printf("%02d-%02d-%04d", f.bits1.dia, f.bits1.mes, f.bits1.anio);
+}
+
+void imprimir_hora(nhora_t h) {
+    const char *periodo;
+
+    // Campo am_pm de 1 bit: 0 = AM, 1 = PM
+    if (h.bits.am_pm == 0) {
+        periodo = "AM";
+    } else {
+        periodo = "PM";
+    }
+
+    printf("%02d:%02d %s", h.bits.hora, h.bits.min, periodo);
+}
+
+void imprimir_fecha_hora(nfecha_t f, nhora_t h) {
+    imprimir_fecha(f);
+    printf(" ");
+    imprimir_hora(h);
+}
+
+void mostrar_turno(const turnos_t * actual) {
+    if (actual != NULL) {
+        printf("Pac ID: %d | Resp ID: %d | Turno: ",
+            actual->pacID,
+            actual->responID);
+        imprimir_fecha_hora(actual->fecha, actual->hora);
+        printf("\n");
+    }
+}
+
+//-------------------------------------------------------------
+
+/**
+	\fn     void limpiar_buffer(void);
+	\brief  Descarta lo que quedo en el buffer de entrada hasta el salto de linea
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  No recibe parametros
+	\return No retorna
+*/
+void limpiar_buffer(void) {
+    int c = getchar();
+
+    while (c != '\n' && c != EOF) {
+        c = getchar();
+    }
+}
+
+
+//-------------------------------------------------------------
+
+/**
+	\fn     int leer_entero(int * valor);
+	\brief  Lee un numero entero por teclado y chequea que sea un numero
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  valor: puntero donde se guarda el numero leido
+	\return 1 si se leyo un numero, 0 si no
+*/
+int leer_entero(int * valor) {
+    int es_numero = 0;
+
+    if (scanf("%d", valor) == 1) {
+        es_numero = 1;
+    }
+    limpiar_buffer();
+
+    return es_numero;
+}
+
+//-------------------------------------------------------------
+
+/**
+	\fn     int leer_uchar(int * valor);
+	\brief  Lee un unsigned char por teclado y chequea que sea un unsigned char
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  valor: puntero donde se guarda el uchar leido
+	\return 1 si se leyo un numero, 0 si no
+*/
+int leer_uchar(unsigned char * valor) {
+    int es_numero = 0;
+
+    if (scanf("%hhu", valor) == 1) {
+        es_numero = 1;
+    }
+    limpiar_buffer();
+
+    return es_numero;
+}
+
+//-------------------------------------------------------------
+
+void ConsultarPacientePorID_Menu1(int socket_fd, nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_paciente_t **Paciente_encontrado){
+    int id_ingresado = 0, resultado_funcion = 0, dato_valido = 0, estado = FIN;
+    paciente_t aux;
+
+    printf("\nIngrese el ID del paciente: ");
+    dato_valido = leer_entero(&id_ingresado);
+    send(socket_fd, &dato_valido, sizeof(int), 0);
+
+    if (dato_valido) {
+        send(socket_fd, &id_ingresado, sizeof(int), 0);
+
+        recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+        while (estado == RECORRIENDO) {
+            recv(socket_fd, &aux, sizeof(paciente_t), MSG_WAITALL);
+            mostrar_paciente(&aux);
+            recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+        }
+        recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
+
+        if (resultado_funcion == 0) {
+            printf("No existe ese ID. Vuelva a intentarlo.\n");
+        } else {
+            printf("\n%d resultados de busqueda\n", resultado_funcion);
+        }
+    } else {
+        printf("Error: el ID debe ser un numero.\n");
+    }
+}
+
+//-------------------------------------------------------------
+
+void ConsultarPacientePorNombre_Menu1(int socket_fd, nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_paciente_t **Paciente_encontrado){
+    int resultado_funcion = 0, estado = FIN;
+    char nombre_ingresado[MAX_LETRAS_NOMBRE];
+    paciente_t aux;
+
+    printf("\nIngrese el nombre del paciente: ");
+    scanf("%29s", nombre_ingresado);
+    limpiar_buffer();
+
+    send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+
+    recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+    while (estado == RECORRIENDO) {
+        recv(socket_fd, &aux, sizeof(paciente_t), MSG_WAITALL);
+        mostrar_paciente(&aux);
+        recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+    }
+    recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
+
+    if (resultado_funcion == 0) {
+        printf("\nNo existe ese nombre en la lista de pacientes. Vuelva a intentarlo.\n");
+    } else {
+        printf("\n%d resultados de busqueda\n", resultado_funcion);
+    }
+}
+
+//-------------------------------------------------------------
+
+void ConsultarResponsablePorID_Menu1(int socket_fd, nodo_responsable_t *lista_resp, nodo_responsable_t **Responsable_encontrado){
+    int id_ingresado = 0, resultado_funcion = 0, dato_valido = 0, estado = FIN;
+    responsable_t aux;
+
+    printf("\nIngrese el ID del responsable: ");
+    dato_valido = leer_entero(&id_ingresado);
+    send(socket_fd, &dato_valido, sizeof(int), 0);
+
+    if (dato_valido) {
+        send(socket_fd, &id_ingresado, sizeof(int), 0);
+
+        recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+        while (estado == RECORRIENDO) {
+            recv(socket_fd, &aux, sizeof(responsable_t), MSG_WAITALL);
+            mostrar_responsable(&aux);
+            recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+        }
+        recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
+
+        if (resultado_funcion == 0) {
+            printf("\nNo existe ese ID en la lista de responsables. Vuelva a intentarlo.\n");
+        } else {
+            printf("\n%d resultados de busqueda\n", resultado_funcion);
+        }
+    } else {
+        printf("Error: el ID debe ser un numero.\n");
+    }
+}
+
+//-------------------------------------------------------------
+
+void ConsultarResponsablePorNombre_Menu1(int socket_fd, nodo_responsable_t *lista_resp, nodo_responsable_t **Responsable_encontrado){
+    int resultado_funcion = 0, estado = FIN;
+    char nombre_ingresado[MAX_LETRAS_NOMBRE];
+    responsable_t aux;
+
+    printf("\nIngrese el nombre del responsable: ");
+    scanf("%29s", nombre_ingresado);
+    limpiar_buffer();
+
+    send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+
+    recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+    while (estado == RECORRIENDO) {
+        recv(socket_fd, &aux, sizeof(responsable_t), MSG_WAITALL);
+        mostrar_responsable(&aux);
+        recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+    }
+    recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
+
+    if (resultado_funcion == 0) {
+        printf("\nNo existe ese nombre en la lista de responsables. Vuelva a intentarlo.\n");
+    } else {
+        printf("\n%d resultados de busqueda\n", resultado_funcion);
+    }
+}
+
+//-------------------------------------------------------------
+
+/*  Servidor para esta opcion:
+        coincidencias = ConsultarCoincidencias_PacienteNombre(socket_fd, lista_pac, nombre_ingresado, NULL);
+        if (coincidencias == 1) { ConsultarTurnos_PacienteNombre(socket_fd, lista_turnos, lista_pac, nombre_ingresado, turnos_encontrados); }
+*/
+void ConsultarTurnosPorPacientes_Menu1(int socket_fd, nodo_paciente_t *lista_pac, nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados){
+    int resultado_funcion = 0, coincidencias = 0, estado = FIN;
+    char nombre_ingresado[MAX_LETRAS_NOMBRE];
+    paciente_t aux_paciente;
+    turnos_t aux_turno;
+
+    printf("\nIngrese el nombre del paciente del cual quiere saber los turnos: ");
+    scanf("%29s", nombre_ingresado);
+    limpiar_buffer();
+
+    send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+
+    // Pacientes que coinciden (como antes, se imprimian)
+    recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+    while (estado == RECORRIENDO) {
+        recv(socket_fd, &aux_paciente, sizeof(paciente_t), MSG_WAITALL);
+        mostrar_paciente(&aux_paciente);
+        recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+    }
+    recv(socket_fd, &coincidencias, sizeof(int), MSG_WAITALL);
+
+    if (coincidencias == 0) {
+        printf("\nNo existe ese nombre en la lista de pacientes. Vuelva a intentarlo.\n");
+    } else {
+        if (coincidencias > 1) {
+            printf("\nHay %d pacientes con ese nombre. Consulte por ID para distinguirlos.\n", coincidencias);
+        } else {
+            // Nombre unico: se reenvia el nombre para la segunda funcion del servidor
+            send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+
+            recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+            while (estado == RECORRIENDO) {
+                recv(socket_fd, &aux_turno, sizeof(turnos_t), MSG_WAITALL);
+                mostrar_turno(&aux_turno);
+                recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+            }
+            recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
+
+            if (resultado_funcion == 0) {
+                printf("\nEl paciente no tiene turnos registrados.\n");
+            } else {
+                printf("\n%d resultados de busqueda\n", resultado_funcion);
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------
+
+/*  Servidor para esta opcion:
+        coincidencias = ConsultarCoincidencias_ResponsableNombre(socket_fd, lista_resp, nombre_ingresado, NULL);
+        if (coincidencias == 1) { ConsultarTurnos_ResponsableNombre(socket_fd, lista_turnos, lista_resp, nombre_ingresado, turnos_encontrados); }
+*/
+void ConsultarTurnosPorResponsable_Menu1(int socket_fd, nodo_responsable_t *lista_resp, nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados){
+    int resultado_funcion = 0, coincidencias = 0, estado = FIN;
+    char nombre_ingresado[MAX_LETRAS_NOMBRE];
+    responsable_t aux_responsable;
+    turnos_t aux_turno;
+
+    printf("\nIngrese el nombre del responsable del cual quiere saber los turnos: ");
+    scanf("%29s", nombre_ingresado);
+    limpiar_buffer();
+
+    send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+
+    recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+    while (estado == RECORRIENDO) {
+        recv(socket_fd, &aux_responsable, sizeof(responsable_t), MSG_WAITALL);
+        mostrar_responsable(&aux_responsable);
+        recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+    }
+    recv(socket_fd, &coincidencias, sizeof(int), MSG_WAITALL);
+
+    if (coincidencias == 0) {
+        printf("\nNo existe ese nombre en la lista de responsables. Vuelva a intentarlo.\n");
+    } else {
+        if (coincidencias > 1) {
+            printf("\nHay %d responsables con ese nombre. Consulte por ID para distinguirlos.\n", coincidencias);
+        } else {
+            send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+
+            recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+            while (estado == RECORRIENDO) {
+                recv(socket_fd, &aux_turno, sizeof(turnos_t), MSG_WAITALL);
+                mostrar_turno(&aux_turno);
+                recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+            }
+            recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
+
+            if (resultado_funcion == 0) {
+                printf("\nEl responsable no tiene turnos registrados.\n");
+            } else {
+                printf("\n%d resultados de busqueda\n", resultado_funcion);
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------
+
+/*  Servidor: ConsultarTurnos_Fecha(socket_fd, lista_turnos, fecha_ingresada, turnos_encontrados); */
+void ConsultarTurnosPorFecha_Menu1(int socket_fd, nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados){
+    nfecha_t fecha_ingresada;
+    turnos_t aux_turno;
+    char fecha_texto[MAX_CARACTERES_FECHA];
+    int dia = 0, mes = 0, anio = 0, resultado_funcion = 0, estado = FIN, dato_valido = 0, fecha_valida = 0;
+
+    fecha_texto[0] = '\0';
+    fecha_ingresada.valor = 0;
+
+    printf("\nIngrese la fecha con el formato DD.MM.AAAA: ");
+    scanf("%10s", fecha_texto);
+    limpiar_buffer();
+
+    // Se chequea el rango de cada dato antes de guardarlo en los campos de bits (dia: 5 bits, mes: 4 bits, año: 12 bits)
+    if (sscanf(fecha_texto, "%d%*c%d%*c%d", &dia, &mes, &anio) == 3 &&
+        dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && anio >= 1 && anio <= 4095) {
+        dato_valido = 1;
+    }
+
+    send(socket_fd, &dato_valido, sizeof(int), 0);
+
+    if (dato_valido) {
+        // Asignacion a los miembros de la estructura nfecha_t
+        fecha_ingresada.bits1.dia = dia;
+        fecha_ingresada.bits1.mes = mes;
+        fecha_ingresada.bits1.anio = anio;
+
+        printf("Dia: %02d | Mes: %02d | Anio: %04d\n", fecha_ingresada.bits1.dia, fecha_ingresada.bits1.mes, fecha_ingresada.bits1.anio);
+        send(socket_fd, &fecha_ingresada, sizeof(nfecha_t), 0);
+
+        recv(socket_fd, &fecha_valida, sizeof(int), MSG_WAITALL);
+
+        if (fecha_valida) {
+            recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+            while (estado == RECORRIENDO) {
+                recv(socket_fd, &aux_turno, sizeof(turnos_t), MSG_WAITALL);
+                mostrar_turno(&aux_turno);
+                recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+            }
+            recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
+
+            if (resultado_funcion == 0) {
+                printf("\nNo hay turnos registrados en esa fecha.\n");
+            } else {
+                printf("\n%d resultados de busqueda\n", resultado_funcion);
+            }
+        } else {
+            printf("Error: La fecha ingresada (%02d/%02d/%04d) no existe o es invalida.\n",
+                   fecha_ingresada.bits1.dia, fecha_ingresada.bits1.mes, fecha_ingresada.bits1.anio);
+        }
+    } else {
+        printf("Error: El formato ingresado no es valido.\n");
+    }
+}
+
+//-------------------------------------------------------------
+
+/*  Servidor: MostrarListadoCompletoPacientes(socket_fd, lista_pac); */
+void MostrarListadoCompletoPacientes(int socket_fd, nodo_paciente_t *lista_pac){
+    int estado = FIN;
+    paciente_t aux;
+
+    recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+
+    if (estado == FIN) {
+        printf("No hay pacientes registrados en el sistema.\n");
+    } else {
+        printf("\n=================== LISTADO DE PACIENTES ===================\n");
+        while (estado == RECORRIENDO) {
+            recv(socket_fd, &aux, sizeof(paciente_t), MSG_WAITALL);
+            mostrar_paciente(&aux);
+            recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+        }
+        printf("============================================================\n");
+    }
+}
+
+//-------------------------------------------------------------
+
+/*  Servidor: MostrarListadoCompletoResponsables(socket_fd, lista_resp); */
+void MostrarListadoCompletoResponsables(int socket_fd, nodo_responsable_t *lista_resp){
+    int estado = FIN;
+    responsable_t aux;
+
+    recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+
+    if (estado == FIN) {
+        printf("No hay responsables registrados en el sistema.\n");
+    } else {
+        printf("\n================== LISTADO DE RESPONSABLES =================\n");
+        while (estado == RECORRIENDO) {
+            recv(socket_fd, &aux, sizeof(responsable_t), MSG_WAITALL);
+            mostrar_responsable(&aux);
+            recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+        }
+        printf("============================================================\n");
+    }
+}

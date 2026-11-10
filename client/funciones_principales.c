@@ -84,61 +84,72 @@ int conectar_servidor(char *ip, int server_port) {
 	\return  int estado
 */
 
-int agregar_turno(int socket_fd){
-	int id = 0, estado = ERROR, cmd = 0, coincidencias = 0;
-	turnos_t nuevo; 
-	paciente_t * paciente = NULL; 
-	int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0;
-	
-	printf("Ingrese el ID del paciente: ");
-	if(leer_entero(&id)){ 
+int agregar_turno(int socket_fd) {
+    int id = 0, estado = ERROR, cmd = 0, coincidencias = 0, dato_valido = 0, flag_srv = FIN;
+    int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0;
+    turnos_t nuevo;
+    paciente_t paciente;
 
-		printf("Paciente seleccionado:\n");
-		
-		cmd = CMD_CONSULTAR_PAC_ID;
+    printf("Ingrese el ID del paciente: ");
+    dato_valido = leer_entero(&id);
+
+    if (dato_valido) {
+        cmd = CMD_CONSULTAR_PAC_ID;
         send(socket_fd, &cmd, sizeof(int), 0);
+        send(socket_fd, &dato_valido, sizeof(int), 0);
         send(socket_fd, &id, sizeof(int), 0);
-        recv(socket_fd, &coincidencias, sizeof(int), 0);
-               
-        if (coincidencias == 1) {
-			recv(socket_fd, paciente, sizeof(paciente_t), 0);
-			printf("ID: %d | Nombre: %s | RespID: %d\n", paciente->pacID, paciente->nombre, paciente->responID);
-         
-			nuevo.pacID = id;
-			nuevo.responID = paciente->responID;
-		
-			printf("Ingrese la fecha siguiendo el siguiente formato: DIA-MES-ANIO: ");
-			scanf("%d-%d-%d", &dia, &mes, &anio);
-			nuevo.fecha.bits1.dia = dia;
-			nuevo.fecha.bits1.mes = mes;
-			nuevo.fecha.bits1.anio = anio;    
-		
-			printf("Ingrese la hora formato 12hs (01 a 12) de la siguiente forma HH:MM: ");
-			scanf("%d:%d", &hora, &min);
-			limpiar_buffer();
-			printf("Ingrese 0 para AM o 1 para PM: ");
-			leer_entero(&am_pm);
 
-			nuevo.hora.bits.hora = hora;
-			nuevo.hora.bits.min = min;
-			nuevo.hora.bits.am_pm = am_pm;
-		
-			if (es_fecha_valida(nuevo.fecha) && es_hora_valida(hora, min, am_pm)){
-				cmd = CMD_AGREGAR_TURNO;
-				send(socket_fd, &cmd, sizeof(int), 0);
-				send(socket_fd, &nuevo, sizeof(turnos_t), 0);
-				
-				if(recv(socket_fd, &estado, sizeof(int), 0)==OK)
-				{
-					 printf("Turno agregado con exito");
-					 estado = OK;
-				}
-				else estado = ERROR;
-			} 
-			else printf("\n Fecha u hora invalida\n");
-		}
-		else printf("\n Paciente no encontrado\n");
-	} 
-	else printf("ID invalido");	
- return estado;
+        recv(socket_fd, &flag_srv, sizeof(int), MSG_WAITALL);
+        while (flag_srv == RECORRIENDO) {
+            recv(socket_fd, &paciente, sizeof(paciente_t), MSG_WAITALL);
+            recv(socket_fd, &flag_srv, sizeof(int), MSG_WAITALL);
+        }
+        recv(socket_fd, &coincidencias, sizeof(int), MSG_WAITALL);
+
+        if (coincidencias == 1) {
+            printf("Paciente seleccionado:\n");
+            printf("ID: %d | Nombre: %s | RespID: %d\n", paciente.pacID, paciente.nombre, paciente.responID);
+
+            nuevo.pacID = id;
+            nuevo.responID = paciente.responID;
+
+            printf("Ingrese la fecha siguiendo el siguiente formato: DIA-MES-ANIO: ");
+            scanf("%d-%d-%d", &dia, &mes, &anio);
+            limpiar_buffer();
+            nuevo.fecha.bits1.dia = dia;
+            nuevo.fecha.bits1.mes = mes;
+            nuevo.fecha.bits1.anio = anio;
+
+            printf("Ingrese la hora formato 12hs (01 a 12) de la siguiente forma HH:MM: ");
+            scanf("%d:%d", &hora, &min);
+            limpiar_buffer();
+            printf("Ingrese 0 para AM o 1 para PM: ");
+            leer_entero(&am_pm);
+
+            nuevo.hora.bits.hora = hora;
+            nuevo.hora.bits.min = min;
+            nuevo.hora.bits.am_pm = am_pm;
+
+            if (es_fecha_valida(nuevo.fecha) && es_hora_valida(hora, min, am_pm)) {
+                cmd = CMD_AGREGAR_TURNO;
+                send(socket_fd, &cmd, sizeof(int), 0);
+                send(socket_fd, &nuevo, sizeof(turnos_t), 0);
+                recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+
+                if (estado == OK) {
+                    printf("Turno agregado con exito\n");
+                } else {
+                    printf("Error al agregar el turno en el servidor\n");
+                }
+            } else {
+                printf("\nFecha u hora invalida\n");
+            }
+        } else {
+            printf("\nPaciente no encontrado\n");
+        }
+    } else {
+        printf("ID invalido\n");
+    }
+
+    return estado;
 }
