@@ -26,7 +26,7 @@ int agregar_responsable(int socket_fd) {
     limpiar_buffer();
     
     printf("Ingrese numero de telefono: ");
-    if (leer_ul(&(nuevo_resp.telcont))) { 
+    if (leer_lu(&(nuevo_resp.telcont))) { 
         send(socket_fd, &cmd, sizeof(int), 0);
         send(socket_fd, &nuevo_resp, sizeof(responsable_t), 0);
         recv(socket_fd, &estado, sizeof(int), 0);
@@ -146,4 +146,26 @@ int eliminarResponsable(int socket_fd) {
         }
     }
     return eliminado;
+}
+
+/** 
+    \fn     int leer_unsigned_long(unsigned long int * valor); 
+    \brief  Lee un numero entero sin signo (long) por teclado y chequea que sea un numero 
+    \author Las Marmotas 
+    \date   2026.11.10
+    \param  valor: puntero donde se guarda el numero leido 
+    \return 1 si se leyo un numero, 0 si no 
+*/ 
+int leer_lu(unsigned long int * valor) { 
+    int es_numero = 0;
+
+    // Se utiliza %lu para leer un unsigned long
+    if (scanf("%lu", valor) == 1) { 
+        es_numero = 1; 
+    } else {
+        *valor = 0; // Si falla la lectura, reseteamos el valor para evitar errores
+    } 
+    limpiar_buffer(); // Siempre limpiamos el buffer, tanto si leyo bien como si fallo[cite: 6]
+
+    return es_numero; 
 }

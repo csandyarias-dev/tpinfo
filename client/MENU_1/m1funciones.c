@@ -25,7 +25,59 @@
 // estructura (no el nodo), el parametro "actual" pasa a ser un puntero a la estructura.
 //-------------------------------------------------------------
 
-void mostrar_paciente(const paciente_t * actual) {
+/**
+	\fn     int es_hora_valida(int hora, int min, int am_pm)
+	\brief  Chequea que la hora sea valida
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  int hora, int min, int am_pm
+	\return 1 si la hora es valida, 0 si no
+*/
+
+int es_hora_valida(int hora, int min, int am_pm) {
+    int valida = 0;
+
+    if (hora >= 1 && hora <= 12 && min >= 0 && min <= 59 && (am_pm == 0 || am_pm == 1)) {
+        valida = 1;
+    }
+
+    return valida;
+}
+
+//-------------------------------------------------------------
+
+/**
+	\fn     int es_fecha_valida(nfecha_t f);
+	\brief  Chequea que la fecha exista (contempla años bisiestos)
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  f: fecha a chequear
+	\return 1 si la fecha es valida, 0 si no
+*/
+int es_fecha_valida(nfecha_t f) {
+    int dias_mes[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int valida = 0, dias_max = 0, bisiesto = 0;
+
+    if (f.bits1.mes >= 1 && f.bits1.mes <= 12 && f.bits1.anio >= 1 && f.bits1.dia >= 1) {
+        bisiesto = ((f.bits1.anio % 4 == 0 && f.bits1.anio % 100 != 0) || f.bits1.anio % 400 == 0);
+        dias_max = dias_mes[f.bits1.mes - 1];
+
+        if (f.bits1.mes == 2 && bisiesto) {
+            dias_max = 29;
+        }
+
+        if (f.bits1.dia <= dias_max) {
+            valida = 1;
+        }
+    }
+
+    return valida;
+} 
+
+
+//-------------------------------------------------------------
+
+void mostrar_paciente(paciente_t * actual) {
     if (actual != NULL) {
         printf("ID: %d | Nombre: %s | Nacimiento: %02d-%02d-%04d | Resp ID: %d\n",
             actual->pacID,
@@ -37,7 +89,7 @@ void mostrar_paciente(const paciente_t * actual) {
     }
 }
 
-void mostrar_responsable(const responsable_t * actual) {
+void mostrar_responsable(responsable_t * actual) {
     if (actual != NULL) {
         printf("Resp ID: %d | Nombre: %s %s | Tel: %lu\n",
             actual->responID,
@@ -70,7 +122,7 @@ void imprimir_fecha_hora(nfecha_t f, nhora_t h) {
     imprimir_hora(h);
 }
 
-void mostrar_turno(const turnos_t * actual) {
+void mostrar_turno(turnos_t * actual) {
     if (actual != NULL) {
         printf("Pac ID: %d | Resp ID: %d | Turno: ",
             actual->pacID,
@@ -143,7 +195,7 @@ int leer_uchar(unsigned char * valor) {
 
 //-------------------------------------------------------------
 
-void ConsultarPacientePorID_Menu1(int socket_fd, nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_paciente_t **Paciente_encontrado){
+void ConsultarPacientePorID_Menu1(int socket_fd){
     int id_ingresado = 0, resultado_funcion = 0, dato_valido = 0, estado = FIN;
     paciente_t aux;
 
@@ -174,7 +226,7 @@ void ConsultarPacientePorID_Menu1(int socket_fd, nodo_paciente_t *lista_pac, nod
 
 //-------------------------------------------------------------
 
-void ConsultarPacientePorNombre_Menu1(int socket_fd, nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_paciente_t **Paciente_encontrado){
+void ConsultarPacientePorNombre_Menu1(int socket_fd){
     int resultado_funcion = 0, estado = FIN;
     char nombre_ingresado[MAX_LETRAS_NOMBRE];
     paciente_t aux;
@@ -202,7 +254,7 @@ void ConsultarPacientePorNombre_Menu1(int socket_fd, nodo_paciente_t *lista_pac,
 
 //-------------------------------------------------------------
 
-void ConsultarResponsablePorID_Menu1(int socket_fd, nodo_responsable_t *lista_resp, nodo_responsable_t **Responsable_encontrado){
+void ConsultarResponsablePorID_Menu1(int socket_fd){
     int id_ingresado = 0, resultado_funcion = 0, dato_valido = 0, estado = FIN;
     responsable_t aux;
 
@@ -233,7 +285,7 @@ void ConsultarResponsablePorID_Menu1(int socket_fd, nodo_responsable_t *lista_re
 
 //-------------------------------------------------------------
 
-void ConsultarResponsablePorNombre_Menu1(int socket_fd, nodo_responsable_t *lista_resp, nodo_responsable_t **Responsable_encontrado){
+void ConsultarResponsablePorNombre_Menu1(int socket_fd){
     int resultado_funcion = 0, estado = FIN;
     char nombre_ingresado[MAX_LETRAS_NOMBRE];
     responsable_t aux;
@@ -265,7 +317,7 @@ void ConsultarResponsablePorNombre_Menu1(int socket_fd, nodo_responsable_t *list
         coincidencias = ConsultarCoincidencias_PacienteNombre(socket_fd, lista_pac, nombre_ingresado, NULL);
         if (coincidencias == 1) { ConsultarTurnos_PacienteNombre(socket_fd, lista_turnos, lista_pac, nombre_ingresado, turnos_encontrados); }
 */
-void ConsultarTurnosPorPacientes_Menu1(int socket_fd, nodo_paciente_t *lista_pac, nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados){
+void ConsultarTurnosPorPacientes_Menu1(int socket_fd){
     int resultado_funcion = 0, coincidencias = 0, estado = FIN;
     char nombre_ingresado[MAX_LETRAS_NOMBRE];
     paciente_t aux_paciente;
@@ -318,7 +370,7 @@ void ConsultarTurnosPorPacientes_Menu1(int socket_fd, nodo_paciente_t *lista_pac
         coincidencias = ConsultarCoincidencias_ResponsableNombre(socket_fd, lista_resp, nombre_ingresado, NULL);
         if (coincidencias == 1) { ConsultarTurnos_ResponsableNombre(socket_fd, lista_turnos, lista_resp, nombre_ingresado, turnos_encontrados); }
 */
-void ConsultarTurnosPorResponsable_Menu1(int socket_fd, nodo_responsable_t *lista_resp, nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados){
+void ConsultarTurnosPorResponsable_Menu1(int socket_fd){
     int resultado_funcion = 0, coincidencias = 0, estado = FIN;
     char nombre_ingresado[MAX_LETRAS_NOMBRE];
     responsable_t aux_responsable;
@@ -366,7 +418,7 @@ void ConsultarTurnosPorResponsable_Menu1(int socket_fd, nodo_responsable_t *list
 //-------------------------------------------------------------
 
 /*  Servidor: ConsultarTurnos_Fecha(socket_fd, lista_turnos, fecha_ingresada, turnos_encontrados); */
-void ConsultarTurnosPorFecha_Menu1(int socket_fd, nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados){
+void ConsultarTurnosPorFecha_Menu1(int socket_fd){
     nfecha_t fecha_ingresada;
     turnos_t aux_turno;
     char fecha_texto[MAX_CARACTERES_FECHA];
@@ -424,7 +476,7 @@ void ConsultarTurnosPorFecha_Menu1(int socket_fd, nodo_turnos_t *lista_turnos, n
 //-------------------------------------------------------------
 
 /*  Servidor: MostrarListadoCompletoPacientes(socket_fd, lista_pac); */
-void MostrarListadoCompletoPacientes(int socket_fd, nodo_paciente_t *lista_pac){
+void MostrarListadoCompletoPacientes(int socket_fd){
     int estado = FIN;
     paciente_t aux;
 
@@ -446,7 +498,7 @@ void MostrarListadoCompletoPacientes(int socket_fd, nodo_paciente_t *lista_pac){
 //-------------------------------------------------------------
 
 /*  Servidor: MostrarListadoCompletoResponsables(socket_fd, lista_resp); */
-void MostrarListadoCompletoResponsables(int socket_fd, nodo_responsable_t *lista_resp){
+void MostrarListadoCompletoResponsable(int socket_fd){
     int estado = FIN;
     responsable_t aux;
 

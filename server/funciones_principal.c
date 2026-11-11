@@ -117,8 +117,8 @@ int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_res
         modificar_paciente,         // 12: CMD_MODIFICAR_PAC
         eliminar_paciente,          // 13: CMD_ELIMINAR_PAC
         agregar_responsable,          // 14: CMD_AGREGAR_RESP
-        modificar_responsable,        // 15: CMD_MODIFICAR_RESP
-        eliminar_responsable,         // 16: CMD_ELIMINAR_RESP
+        modificarResponsable,        // 15: CMD_MODIFICAR_RESP
+        eliminarResponsable,         // 16: CMD_ELIMINAR_RESP
         mostrar_tipos_animales,         // 17: CMD_MOSTRAR_TIPOS
         agregar_tipo_animal,          // 18: CMD_AGREGAR_TIPO
         modificar_tipo_animal,        // 19: CMD_MODIFICAR_TIPO
@@ -126,7 +126,7 @@ int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_res
     };
 
     if (comando >= CMD_CONSULTAR_PAC_ID && comando <= CMD_BORRAR_TIPO) {
-        //estado = acciones_servidor[comando - 1](client_fd, u_pac, u_resp, pac, resp, tur, tipos, cant_t, u_tipo);
+        estado = acciones_servidor[comando - 1](client_fd, u_pac, u_resp, pac, resp, tur, tipos, cant_t, u_tipo);
     }
 
     return estado;
@@ -300,9 +300,8 @@ int importar_desde_archivo(int * ultimo_id_pac, int * ultimo_id_resp, nodo_pacie
 */
 
 int agregar_turno(int client_fd, int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo){
-	int id = 0, estado = ERROR;
+	int estado = ERROR;
 	turnos_t nuevo; 
-	nodo_paciente_t * paciente = NULL; 
 	
 	if (recv(client_fd, &nuevo, sizeof(turnos_t), 0)>0) {
 		if (aniadir_ordenado_t(turnos, nuevo) == OK)

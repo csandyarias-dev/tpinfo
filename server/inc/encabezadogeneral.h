@@ -95,12 +95,13 @@ typedef struct nodo_turnos{
 	struct nodo_turnos * sig;
 	}nodo_turnos_t; 
 	
+typedef int (*puntero_cmd_servidor_t)(int, int *, int *, nodo_paciente_t **, nodo_responsable_t **, nodo_turnos_t **, tipopac_t **, int *, int *);
 
 //-------------
 //-- Enums --
 //-------------
 
-enum ERRORES_GENERALES{ERROR=-3, ERROR_MEMORIA, ERROR_ARCHIVO, OK=1};
+enum ERRORES_GENERALES{ERROR_CONEXION=-4, ERROR, ERROR_MEMORIA, ERROR_ARCHIVO, OK=1};
 
 enum COMANDOS_SOCKET {
     CMD_CONSULTAR_PAC_ID = 1,
@@ -237,7 +238,7 @@ int importar_desde_archivo(int * ultimo_id_pac, int * ultimo_id_resp, nodo_pacie
 	\return  int estado
 */
 
-int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo);
+int agregar_turno(int, int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo);
 
 /**
 	\fn      int comparar_fecha_hora(turnos_t a, turnos_t b)

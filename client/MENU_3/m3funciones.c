@@ -9,7 +9,7 @@ int agregar_paciente(int socket_fd) {
     int estado = ERROR, cmd = CMD_AGREGAR_PAC, dia = 0, mes = 0, anio = 0;
 
     memset(&cliente, 0, sizeof(paciente_t));
-    mostrar_tipos_animales(socket_fd);
+    mostrar_tipos_animales_cliente(socket_fd);
     printf("Ingrese el ID del tipo de paciente: ");
     if (leer_uchar(&(cliente.tipoID))) {
         printf("Ingrese nombre del paciente: ");

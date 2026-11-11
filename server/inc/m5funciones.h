@@ -1,108 +1,89 @@
-
 /**
-	\file    menu_configuracion.h
-	\brief   contiene las funciones pertenecientes al menu de configuracion
-	\author  Grupo las marmotas
-	\date    2026.09.02
-	\version 1.0.0
+    \file    m5funciones_servidor.h
+    \brief   Contiene las funciones del servidor pertenecientes al menu 5 (Tipos de animales)
+    \author  Las Marmotas
+    \version 2.0.0
 */
 
-#ifndef MENU_CONFIGURACION_H
-#define MENU_CONFIGURACION_H
+#ifndef M5FUNCIONES_SERVIDOR_H
+#define M5FUNCIONES_SERVIDOR_H
 
 //--------------
-//-- includes --
+//-- Includes --
 //--------------
 
-//#include "encabezadogeneral.h"
-
-//--------------
-//-- Defines --
-//--------------
-
-#define MOSTRAR_TIPOS 1 
-#define BORRAR_TIPO 4
-#define VOLVER_MENU5 5  
-
-//--------------
-//-- includes --
-//--------------
-typedef void (*p_menu5_t)(tipopac_t **, int *, int *);
+#include "../inc/encabezadogeneral.h"
 
 //----------------
-//-- prototipos de funciones --
+//-- Prototipos --
 //----------------
 
 /**
-	\fn     void ejecutar_menu_configuracion(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Ejecuta el menu principal de configuracion
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      int mostrar_tipos_animales(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+    \brief   Recorre el vector de tipos de animales y los envia al cliente por socket
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   pac Puntero a la cabeza de la lista de pacientes
+    \param   resp Puntero a la cabeza de la lista de responsables
+    \param   tur Puntero a la cabeza de la lista de turnos
+    \param   vector_tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_tipos Puntero a la cantidad actual de tipos registrados
+    \param   ultimo_tipoID Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad de elementos enviados
 */
-void ejecutar_menu_configuracion(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+int mostrar_tipos_animales(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
 
 /**
-	\fn     void mostrar_tipos_animales(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Muestra la lista de tipos de animales registrados
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      int agregar_tipo_animal(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+    \brief   Recibe un nombre, actualiza el vector dinamico asignando un nuevo ID y responde el estado
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   pac Puntero a la cabeza de la lista de pacientes
+    \param   resp Puntero a la cabeza de la lista de responsables
+    \param   tur Puntero a la cabeza de la lista de turnos
+    \param   vector_tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_tipos Puntero a la cantidad actual de tipos registrados
+    \param   ultimo_tipoID Puntero al ultimo ID historico generado para tipos
+    \return  int estado (OK o ERROR)
 */
-void mostrar_tipos_animales(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+int agregar_tipo_animal(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
 
 /**
-	\fn     void agregar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Agrega un nuevo tipo de animal a la lista
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      int modificar_tipo_animal(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+    \brief   Recibe ID y nombre, busca en el vector, actualiza el dato y responde el estado
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   pac Puntero a la cabeza de la lista de pacientes
+    \param   resp Puntero a la cabeza de la lista de responsables
+    \param   tur Puntero a la cabeza de la lista de turnos
+    \param   vector_tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_tipos Puntero a la cantidad actual de tipos registrados
+    \param   ultimo_tipoID Puntero al ultimo ID historico generado para tipos
+    \return  int estado (OK o ERROR)
 */
-void agregar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+int modificar_tipo_animal(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
 
 /**
-	\fn     void modificar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Modifica un tipo de animal existente en la lista
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      int borrar_tipo_animal(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+    \brief   Recibe un ID, elimina el tipo del vector, reasigna memoria y responde el estado
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   pac Puntero a la cabeza de la lista de pacientes
+    \param   resp Puntero a la cabeza de la lista de responsables
+    \param   tur Puntero a la cabeza de la lista de turnos
+    \param   vector_tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_tipos Puntero a la cantidad actual de tipos registrados
+    \param   ultimo_tipoID Puntero al ultimo ID historico generado para tipos
+    \return  int estado (OK o ERROR)
 */
-void modificar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+int borrar_tipo_animal(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
 
-/**
-	\fn     void borrar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Elimina un tipo de animal de la lista
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
-*/
-void borrar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-
-/**
-	\fn     void volver_menu_principal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Regresa al menu principal del sistema
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
-*/
-void volver_menu_principal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-
-#endif
+#endif // M5FUNCIONES_SERVIDOR_H

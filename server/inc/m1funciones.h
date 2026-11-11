@@ -40,27 +40,157 @@ const char * obtener_nombre_responsable(nodo_responsable_t * lista_resp, int res
 // Búsquedas y Consultas de Datos 
 //----------------------------------
 
-int ConsultarCoincidencias_PacienteID(nodo_paciente_t *lista_pacientes, int id_ingresado, nodo_paciente_t **Paciente_encontrado);
-int ConsultarCoincidencias_PacienteNombre(nodo_paciente_t *lista_pacientes, const char *nombre_ingresado, nodo_paciente_t **Paciente_encontrado);
-int ConsultarCoincidencias_ResponsableID(nodo_responsable_t *lista_responsables, int id_ingresado, nodo_responsable_t **Responsable_encontrado);
-int ConsultarCoincidencias_ResponsableNombre(nodo_responsable_t *lista_responsables, const char *nombre_ingresado, nodo_responsable_t **Responsable_encontrado);
-int ConsultarTurnos_PacienteNombre(nodo_turnos_t *lista_turnos, nodo_paciente_t *lista_pacientes, const char *nombre_ingresado, nodo_turnos_t ***turnos_encontrados);
-int ConsultarTurnos_Fecha(nodo_turnos_t *lista_turnos, nfecha_t fecha_ingresada, nodo_turnos_t ***turnos_encontrados);
-int ConsultarTurnos_ResponsableNombre(nodo_turnos_t *lista_turnos, nodo_responsable_t *lista_responsables, const char *nombre_ingresado, nodo_turnos_t ***turnos_encontrados);
+/**
+    \fn      int ConsultarCoincidencias_PacienteID(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recibe un ID, busca en la lista de pacientes y envia las coincidencias
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad de coincidencias encontradas
+*/
+int ConsultarCoincidencias_PacienteID(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
 
-//----------------------------------
-// Opciones de Menú 1
-//----------------------------------
+/**
+    \fn      int ConsultarCoincidencias_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recibe un nombre, busca en la lista de pacientes y envia las coincidencias
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad de coincidencias encontradas
+*/
+int ConsultarCoincidencias_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
 
-void ConsultarPacientePorID_Menu1(nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_paciente_t **Paciente_encontrado);
-void ConsultarPacientePorNombre_Menu1(nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_paciente_t **Paciente_encontrado);
-void ConsultarResponsablePorID_Menu1(nodo_responsable_t *lista_resp, nodo_responsable_t **Responsable_encontrado);
-void ConsultarResponsablePorNombre_Menu1(nodo_responsable_t *lista_resp, nodo_responsable_t **Responsable_encontrado);
-void ConsultarTurnosPorPacientes_Menu1(nodo_paciente_t *lista_pac, nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados);
-void ConsultarTurnosPorResponsable_Menu1(nodo_responsable_t *lista_resp, nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados);
-void ConsultarTurnosPorFecha_Menu1(nodo_turnos_t *lista_turnos, nodo_turnos_t ***turnos_encontrados);
-void MostrarListadoCompletoPacientes(nodo_paciente_t *lista_pac);
-void MostrarListadoCompletoResponsables(nodo_responsable_t *lista_resp);
-// void menu1(nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_turnos_t *lista_turnos);
+/**
+    \fn      int ConsultarCoincidencias_ResponsableID(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recibe un ID, busca en la lista de responsables y envia las coincidencias
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad de coincidencias encontradas
+*/
+int ConsultarCoincidencias_ResponsableID(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
+/**
+    \fn      int ConsultarCoincidencias_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recibe un nombre, busca en la lista de responsables y envia las coincidencias
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad de coincidencias encontradas
+*/
+int ConsultarCoincidencias_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
+/**
+    \fn      int ConsultarTurnos_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recibe el nombre de un paciente y envia los turnos asociados al mismo
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad de turnos encontrados
+*/
+int ConsultarTurnos_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
+/**
+    \fn      int ConsultarTurnos_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recibe el nombre de un responsable y envia los turnos asociados al mismo
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad de turnos encontrados
+*/
+int ConsultarTurnos_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
+/**
+    \fn      int ConsultarTurnos_Fecha(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recibe una fecha y envia todos los turnos registrados para ese dia
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad de turnos encontrados
+*/
+int ConsultarTurnos_Fecha(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
+/**
+    \fn      int MostrarListadoCompletoPacientes(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recorre la lista completa de pacientes y los envia al cliente
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad total de pacientes enviados
+*/
+int MostrarListadoCompletoPacientes(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
+/**
+    \fn      int MostrarListadoCompletoResponsables(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+    \brief   Recorre la lista completa de responsables y los envia al cliente
+    \author  Las Marmotas
+    \param   socket_fd Socket del cliente
+    \param   u_pac Puntero al ultimo ID de paciente
+    \param   u_resp Puntero al ultimo ID de responsable
+    \param   lista_pacientes Puntero a la cabeza de la lista de pacientes
+    \param   lista_responsables Puntero a la cabeza de la lista de responsables
+    \param   lista_turnos Puntero a la cabeza de la lista de turnos
+    \param   tipos Puntero al vector dinamico de tipos de animales
+    \param   cant_t Puntero a la cantidad actual de tipos registrados
+    \param   u_tipo Puntero al ultimo ID historico generado para tipos
+    \return  int Cantidad total de responsables enviados
+*/
+int MostrarListadoCompletoResponsables(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
 
 #endif 

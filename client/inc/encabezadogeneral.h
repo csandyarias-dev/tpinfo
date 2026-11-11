@@ -133,6 +133,7 @@ enum COMANDOS_SOCKET {
 #define CONSULTAR_INFORMACION 1
 #define MENU_CONFIGURACION 5
 #define SALIR 6
+#define EXITO 1
 
 //-----------------------------------------
 //-- typedef puntero a funcion principal --

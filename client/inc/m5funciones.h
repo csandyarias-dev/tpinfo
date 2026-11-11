@@ -1,108 +1,68 @@
-
 /**
-	\file    menu_configuracion.h
-	\brief   contiene las funciones pertenecientes al menu de configuracion
-	\author  Grupo las marmotas
-	\date    2026.09.02
-	\version 1.0.0
+    \file    m5funciones_cliente.h
+    \brief   Contiene las funciones del cliente pertenecientes al menu 5 (Tipos de animales)
+    \author  Las Marmotas
+    \version 2.0.0
 */
 
-#ifndef MENU_CONFIGURACION_H
-#define MENU_CONFIGURACION_H
+#ifndef M5FUNCIONES_CLIENTE_H
+#define M5FUNCIONES_CLIENTE_H
 
 //--------------
-//-- includes --
+//-- Includes --
 //--------------
 
-//#include "encabezadogeneral.h"
+#include "../inc/encabezadogeneral.h"
 
-//--------------
-//-- Defines --
-//--------------
-
-#define MOSTRAR_TIPOS 1 
-#define BORRAR_TIPO 4
-#define VOLVER_MENU5 5  
-
-//--------------
-//-- includes --
-//--------------
-typedef void (*p_menu5_t)(tipopac_t **, int *, int *);
+typedef void (*ptr_m5_cliente_t)(int);
 
 //----------------
-//-- prototipos de funciones --
+//-- Prototipos --
 //----------------
 
 /**
-	\fn     void ejecutar_menu_configuracion(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Ejecuta el menu principal de configuracion
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      int m5menu(int socket_fd);
+    \brief   Muestra el menu de configuracion y gestiona el envio de comandos al servidor
+    \author  Las Marmotas
+    \param   socket_fd Descriptor del socket conectado al servidor
+    \return  int estado (OK)
 */
-void ejecutar_menu_configuracion(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+int m5menu(int socket_fd);
 
 /**
-	\fn     void mostrar_tipos_animales(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Muestra la lista de tipos de animales registrados
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      void mostrar_tipos_animales_cliente(int socket_fd);
+    \brief   Solicita al servidor la lista de tipos de animales y la imprime en pantalla
+    \author  Las Marmotas
+    \param   socket_fd Descriptor del socket conectado al servidor
+    \return  void
 */
-void mostrar_tipos_animales(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+void mostrar_tipos_animales_cliente(int socket_fd);
 
 /**
-	\fn     void agregar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Agrega un nuevo tipo de animal a la lista
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      void agregar_tipo_animal_cliente(int socket_fd);
+    \brief   Pide un nombre por teclado y le solicita al servidor agregarlo al sistema
+    \author  Las Marmotas
+    \param   socket_fd Descriptor del socket conectado al servidor
+    \return  void
 */
-void agregar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+void agregar_tipo_animal_cliente(int socket_fd);
 
 /**
-	\fn     void modificar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Modifica un tipo de animal existente en la lista
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      void modificar_tipo_animal_cliente(int socket_fd);
+    \brief   Pide ID y nuevo nombre por teclado y le solicita al servidor la modificacion
+    \author  Las Marmotas
+    \param   socket_fd Descriptor del socket conectado al servidor
+    \return  void
 */
-void modificar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+void modificar_tipo_animal_cliente(int socket_fd);
 
 /**
-	\fn     void borrar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Elimina un tipo de animal de la lista
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
+    \fn      void borrar_tipo_animal_cliente(int socket_fd);
+    \brief   Pide el ID de un animal por teclado y le solicita al servidor su eliminacion
+    \author  Las Marmotas
+    \param   socket_fd Descriptor del socket conectado al servidor
+    \return  void
 */
-void borrar_tipo_animal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
+void borrar_tipo_animal_cliente(int socket_fd);
 
-/**
-	\fn     void volver_menu_principal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-	\brief  Regresa al menu principal del sistema
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  tipopac_t ** vector_tipos
-	\param  int * cant_tipos
-	\param  int * ultimo_tipoID
-	\return void
-*/
-void volver_menu_principal(tipopac_t **vector_tipos, int *cant_tipos, int *ultimo_tipoID);
-
-#endif
+#endif // M5FUNCIONES_CLIENTE_H

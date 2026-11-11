@@ -18,6 +18,9 @@ Una vez ingresado al menú 1 mostrará las siguientes opciones:
 #ifndef ENCABEZADO_MAIN1_H
 #define ENCABEZADO_MAIN1_H
 
+#define RECORRIENDO 1
+#define FIN 0
+
 //----------------------------------
 // Funciones Auxiliares y de Impresión
 //----------------------------------
@@ -46,6 +49,6 @@ void ConsultarTurnosPorPacientes_Menu1(int socket_fd);
 void ConsultarTurnosPorResponsable_Menu1(int socket_fd);
 void ConsultarTurnosPorFecha_Menu1(int socket_fd);
 void MostrarListadoCompletoPacientes(int socket_fd);
-void MostrarListadoCompletoResponsables(int socket_fd);
+void MostrarListadoCompletoResponsable(int socket_fd);
 
 #endif 

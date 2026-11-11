@@ -17,6 +17,9 @@
 //--------------
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include "../inc/encabezadogeneral.h"
 
 //-------------
@@ -47,7 +50,7 @@ int m1menu(int socket_fd) {
         ConsultarTurnosPorResponsable_Menu1,
         ConsultarTurnosPorFecha_Menu1,
         MostrarListadoCompletoPacientes,
-        MostrarListadoCompletoResponsables
+        MostrarListadoCompletoResponsable
     };
 
     while (loop) {

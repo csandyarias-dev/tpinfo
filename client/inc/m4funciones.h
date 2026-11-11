@@ -80,4 +80,6 @@ int modificarResponsable(int socket_fd);
 */
 int eliminarResponsable(int socket_fd);
 
-#endifnt socket_fd, respo
+int leer_lu(unsigned long int * valor);
+
+#endif
