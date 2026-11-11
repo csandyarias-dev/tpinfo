@@ -17,7 +17,7 @@ int obtener_ip_puerto(int cant, char *argv[], char *ip, int *puerto) {
     if (cant == 1) {
         fp = fopen(ARCH_CLIENTE, "r");
         if (fp != NULL) {
-            if (fscanf(fp, "%s:%d", ip, puerto) != 2 || *puerto == 0) {
+            if (fscanf(fp, "%29[^:]:%d", ip, puerto) != 2 || *puerto == 0) {
                 printf("Error de formato en cfg/cliente.cfg\n");
                 error = 1;
             }

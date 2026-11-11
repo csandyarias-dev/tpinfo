@@ -24,8 +24,8 @@ BUILD_DIR     = build
 BIN_DIR       = bin
 VPATH         = MENU_1 MENU_3 MENU_4 MENU_5 .
 
-SOURCES       = mainPrincipal.c funciones_principal.c m1_desarrollodefunciones.c m3funciones.c m4funciones.c m5funciones.c
-OBJS          = mainPrincipal.o funciones_principal.o m1_desarrollodefunciones.o m3funciones.o m4funciones.o m5funciones.o
+SOURCES       = mainPrincipal.c funciones_principal.c m1funciones.c m3funciones.c m4funciones.c m5funciones.c
+OBJS          = mainPrincipal.o funciones_principal.o m1funciones.o m3funciones.o m4funciones.o m5funciones.o
 OBJS_PATHS    = $(addprefix $(BUILD_DIR)/, $(OBJS))
 
 EXEC          = veterinaria_server

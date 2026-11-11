@@ -3,14 +3,6 @@
 	\brief   Funciones internas del servidor (Menu 1) con socket. NINGUNA imprime por pantalla.
 	\author  Las Marmotas
 	\version 2.0.0
-
-	Se mantienen SIN CAMBIOS (copiarlas del archivo original):
-	  obtener_nombre_paciente(), obtener_nombre_responsable(), es_fecha_valida(), es_hora_valida()
-	Pasan al cliente: mostrar_*, imprimir_*, limpiar_buffer, leer_entero, leer_uchar
-
-	PROTOCOLO (flag "estado"):
-	  - Por cada elemento encontrado el servidor envia:  estado = RECORRIENDO  + la estructura
-	  - Al terminar envia:                               estado = FIN          + contador
 */
 
 #include <stdlib.h>
@@ -75,6 +67,34 @@ const char * obtener_nombre_paciente(nodo_paciente_t * lista_pac, int pacID) {
     return nombre;
 }
 
+//------------------------------------------------------------- 
+
+/**
+	\fn     int coincide_responsable(responsable_t r, const char *nom, const char *ape)
+	\brief  Chequea que la hora sea valida
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  responsable_t r, const char *nom, const char *ape
+	\return int coincide
+*/
+
+int coincide_responsable(responsable_t r, const char *nom, const char *ape) {
+    int coincide = 0, evaluar_nom = 0, evaluar_ape = 0;
+
+    if (nom[0] != '\0' && strcmp(nom, "-") != 0) evaluar_nom = 1;
+    if (ape[0] != '\0' && strcmp(ape, "-") != 0) evaluar_ape = 1;
+
+    if (evaluar_nom && evaluar_ape) {
+        if (strcasecmp(r.nombre, nom) == 0 && strcasecmp(r.apellido, ape) == 0) coincide = 1;
+    } else if (evaluar_nom) {
+        if (strcasecmp(r.nombre, nom) == 0) coincide = 1;
+    } else if (evaluar_ape) {
+        if (strcasecmp(r.apellido, ape) == 0) coincide = 1;
+    }
+
+    return coincide;
+} 
+
 //-------------------------------------------------------------
 
 /**
@@ -124,6 +144,39 @@ int es_fecha_valida(nfecha_t f) {
     }
 
     return valida;
+} 
+
+//------------------------------------------------------------- 
+
+/**
+	\fn      int comparar_fecha_hora(turnos_t a, turnos_t b)
+	\brief   Compara dos turnos cronologicamente por fecha y hora (ascendente)
+	\author  Grupo Las Marmotas
+	\date    2026.10.29
+	\param   turnos_t a, turnos_t b
+	\return  >0 si a > b, <0 si a < b, 0 si son iguales
+*/
+int comparar_fecha_hora(turnos_t a, turnos_t b) {
+    int res = 0, hora_a = 0, hora_b = 0;
+
+    if (a.fecha.bits1.anio != b.fecha.bits1.anio) {
+        res = (int)a.fecha.bits1.anio - (int)b.fecha.bits1.anio;
+    } else if (a.fecha.bits1.mes != b.fecha.bits1.mes) {
+        res = (int)a.fecha.bits1.mes - (int)b.fecha.bits1.mes;
+    } else if (a.fecha.bits1.dia != b.fecha.bits1.dia) {
+        res = (int)a.fecha.bits1.dia - (int)b.fecha.bits1.dia;
+    } else if (a.hora.bits.am_pm != b.hora.bits.am_pm) {
+        res = (int)a.hora.bits.am_pm - (int)b.hora.bits.am_pm;
+    } else {
+        hora_a = (a.hora.bits.hora == 12) ? 0 : (int)a.hora.bits.hora;
+        hora_b = (b.hora.bits.hora == 12) ? 0 : (int)b.hora.bits.hora;
+        if (hora_a != hora_b) {
+            res = hora_a - hora_b;
+        } else {
+            res = (int)a.hora.bits.min - (int)b.hora.bits.min;
+        }
+    }
+    return res;
 } 
 
 //-------------------------------------------------------------
@@ -184,7 +237,7 @@ int ConsultarCoincidencias_PacienteNombre(int socket_fd, int *u_pac, int *u_resp
     nombre_ingresado[MAX_LETRAS_NOMBRE - 1] = '\0';
 
     while (aux_pacientes != NULL) {
-        if (strcmp(aux_pacientes->paciente.nombre, nombre_ingresado) == 0) {
+        if (strcasecmp(aux_pacientes->paciente.nombre, nombre_ingresado) == 0) {
             estado = RECORRIENDO;
             send(socket_fd, &estado, sizeof(int), 0);
             send(socket_fd, &(aux_pacientes->paciente), sizeof(paciente_t), 0);
@@ -252,13 +305,16 @@ int ConsultarCoincidencias_ResponsableID(int socket_fd, int *u_pac, int *u_resp,
 int ConsultarCoincidencias_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo) {
     int contador = 0, estado = FIN;
     char nombre_ingresado[MAX_LETRAS_NOMBRE] = {0};
+    char apellido_ingresado[MAX_LETRAS_NOMBRE] = {0};
     nodo_responsable_t *aux_responsables = *lista_responsables;
 
     recv(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, MSG_WAITALL);
+    recv(socket_fd, apellido_ingresado, MAX_LETRAS_NOMBRE, MSG_WAITALL);
     nombre_ingresado[MAX_LETRAS_NOMBRE - 1] = '\0';
+    apellido_ingresado[MAX_LETRAS_NOMBRE - 1] = '\0';
 
     while (aux_responsables != NULL) {
-        if (strcmp(aux_responsables->responsable.nombre, nombre_ingresado) == 0) {
+        if (coincide_responsable(aux_responsables->responsable, nombre_ingresado, apellido_ingresado)) {
             estado = RECORRIENDO;
             send(socket_fd, &estado, sizeof(int), 0);
             send(socket_fd, &(aux_responsables->responsable), sizeof(responsable_t), 0);
@@ -273,7 +329,6 @@ int ConsultarCoincidencias_ResponsableNombre(int socket_fd, int *u_pac, int *u_r
 
     return contador;
 }
-
 //-------------------------------------------------------------
 
 /**
@@ -302,7 +357,7 @@ int ConsultarTurnos_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_
 
         while (aux_turnos != NULL) {
             nombre_pac = obtener_nombre_paciente(*lista_pacientes, aux_turnos->turnos.pacID);
-            if (nombre_pac != NULL && strcmp(nombre_pac, nombre_ingresado) == 0) {
+            if (nombre_pac != NULL && strcasecmp(nombre_pac, nombre_ingresado) == 0) {
                 estado = RECORRIENDO;
                 send(socket_fd, &estado, sizeof(int), 0);
                 send(socket_fd, &(aux_turnos->turnos), sizeof(turnos_t), 0);
@@ -383,22 +438,29 @@ int ConsultarTurnos_Fecha(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_
 	\return Cantidad de turnos encontrados
 */
 int ConsultarTurnos_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo) {
-    int contador = 0, coincidencias = 0, estado = FIN;
+    int contador = 0, coincidencias = 0, estado = FIN, id_resp_unico = -1;
     char nombre_ingresado[MAX_LETRAS_NOMBRE] = {0};
+    char apellido_ingresado[MAX_LETRAS_NOMBRE] = {0};
     nodo_turnos_t *aux_turnos = *lista_turnos;
-    const char *nombre_resp = NULL;
+    nodo_responsable_t *aux_resp = *lista_responsables;
 
-    // Paso 1: Verifica coincidencias de responsables con ese nombre
     coincidencias = ConsultarCoincidencias_ResponsableNombre(socket_fd, u_pac, u_resp, lista_pacientes, lista_responsables, lista_turnos, tipos, cant_t, u_tipo);
 
-    // Paso 2: Si es unico, recibe el nombre y envia los turnos
     if (coincidencias == 1) {
         recv(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, MSG_WAITALL);
+        recv(socket_fd, apellido_ingresado, MAX_LETRAS_NOMBRE, MSG_WAITALL);
         nombre_ingresado[MAX_LETRAS_NOMBRE - 1] = '\0';
+        apellido_ingresado[MAX_LETRAS_NOMBRE - 1] = '\0';
+
+        while (aux_resp != NULL && id_resp_unico == -1) {
+            if (coincide_responsable(aux_resp->responsable, nombre_ingresado, apellido_ingresado)) {
+                id_resp_unico = aux_resp->responsable.responID;
+            }
+            aux_resp = aux_resp->sig;
+        }
 
         while (aux_turnos != NULL) {
-            nombre_resp = obtener_nombre_responsable(*lista_responsables, aux_turnos->turnos.responID);
-            if (nombre_resp != NULL && strcmp(nombre_resp, nombre_ingresado) == 0) {
+            if (aux_turnos->turnos.responID == id_resp_unico) {
                 estado = RECORRIENDO;
                 send(socket_fd, &estado, sizeof(int), 0);
                 send(socket_fd, &(aux_turnos->turnos), sizeof(turnos_t), 0);
@@ -468,3 +530,4 @@ int MostrarListadoCompletoResponsables(int socket_fd, int *u_pac, int *u_resp, n
 
     return contador;
 }
+

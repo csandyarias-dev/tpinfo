@@ -20,10 +20,6 @@
 #define FIN 0
 #endif
 
-//-------------------------------------------------------------
-// Funciones de impresion: mismos nombres que el original. Como el cliente recibe la
-// estructura (no el nodo), el parametro "actual" pasa a ser un puntero a la estructura.
-//-------------------------------------------------------------
 
 /**
 	\fn     int es_hora_valida(int hora, int min, int am_pm)
@@ -77,6 +73,15 @@ int es_fecha_valida(nfecha_t f) {
 
 //-------------------------------------------------------------
 
+/**
+	\fn     void mostrar_paciente(paciente_t * actual)
+	\brief  Imprime el paciente
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  paciente_t * actual
+	\return void
+*/
+
 void mostrar_paciente(paciente_t * actual) {
     if (actual != NULL) {
         printf("ID: %d | Nombre: %s | Nacimiento: %02d-%02d-%04d | Resp ID: %d\n",
@@ -89,6 +94,17 @@ void mostrar_paciente(paciente_t * actual) {
     }
 }
 
+//-------------------------------------------------------------
+
+/**
+	\fn     void mostrar_responsable(responsable_t * actual)
+	\brief  Imprime el responsable
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  responsable_t * actual
+	\return void
+*/
+
 void mostrar_responsable(responsable_t * actual) {
     if (actual != NULL) {
         printf("Resp ID: %d | Nombre: %s %s | Tel: %lu\n",
@@ -99,9 +115,31 @@ void mostrar_responsable(responsable_t * actual) {
     }
 }
 
+//-------------------------------------------------------------
+
+/**
+	\fn     void imprimir_fecha(nfecha_t f) 
+	\brief  Imprime la fecha 
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  nfecha_t f
+	\return void
+*/
+
 void imprimir_fecha(nfecha_t f) {
     printf("%02d-%02d-%04d", f.bits1.dia, f.bits1.mes, f.bits1.anio);
-}
+} 
+
+//-------------------------------------------------------------
+
+/**
+	\fn     void imprimir_hora(nhora_t h) 
+	\brief  Imprime la hora
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  nhora_t h
+	\return void
+*/
 
 void imprimir_hora(nhora_t h) {
     const char *periodo;
@@ -114,13 +152,35 @@ void imprimir_hora(nhora_t h) {
     }
 
     printf("%02d:%02d %s", h.bits.hora, h.bits.min, periodo);
-}
+} 
+
+//-------------------------------------------------------------
+
+/**
+	\fn     void imprimir_fecha_hora(nfecha_t f, nhora_t h) 
+	\brief  Imprime la fecha y la hora
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  nfecha_t f, nhora_t h
+	\return void
+*/
 
 void imprimir_fecha_hora(nfecha_t f, nhora_t h) {
     imprimir_fecha(f);
     printf(" ");
     imprimir_hora(h);
-}
+} 
+
+//-------------------------------------------------------------
+
+/**
+	\fn     void mostrar_turno(turnos_t * actual);
+	\brief  Imprime el turno
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  turnos_t * actual
+	\return void
+*/
 
 void mostrar_turno(turnos_t * actual) {
     if (actual != NULL) {
@@ -130,6 +190,33 @@ void mostrar_turno(turnos_t * actual) {
         imprimir_fecha_hora(actual->fecha, actual->hora);
         printf("\n");
     }
+}
+
+//-------------------------------------------------------------
+
+/**
+	\fn     int coincide_responsable(responsable_t r, const char *nom, const char *ape);
+	\brief  Verifica si el responsable coincide por nombre y/o apellido (insensible a mayusculas)
+	\author Las Marmotas
+	\date   2026.10.29
+	\param  responsable_t r, const char *nom, const char *ape
+	\return int coincide
+*/
+int coincide_responsable(responsable_t r, const char *nom, const char *ape) {
+    int coincide = 0, evaluar_nom = 0, evaluar_ape = 0;
+
+    if (nom[0] != '\0' && strcmp(nom, "-") != 0) evaluar_nom = 1;
+    if (ape[0] != '\0' && strcmp(ape, "-") != 0) evaluar_ape = 1;
+
+    if (evaluar_nom && evaluar_ape) {
+        if (strcasecmp(r.nombre, nom) == 0 && strcasecmp(r.apellido, ape) == 0) coincide = 1;
+    } else if (evaluar_nom) {
+        if (strcasecmp(r.nombre, nom) == 0) coincide = 1;
+    } else if (evaluar_ape) {
+        if (strcasecmp(r.apellido, ape) == 0) coincide = 1;
+    }
+
+    return coincide;
 }
 
 //-------------------------------------------------------------
@@ -232,7 +319,7 @@ void ConsultarPacientePorNombre_Menu1(int socket_fd){
     paciente_t aux;
 
     printf("\nIngrese el nombre del paciente: ");
-    scanf("%29s", nombre_ingresado);
+    scanf(" %29[^\n]", nombre_ingresado);
     limpiar_buffer();
 
     send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
@@ -287,14 +374,20 @@ void ConsultarResponsablePorID_Menu1(int socket_fd){
 
 void ConsultarResponsablePorNombre_Menu1(int socket_fd){
     int resultado_funcion = 0, estado = FIN;
-    char nombre_ingresado[MAX_LETRAS_NOMBRE];
+    char nombre_ingresado[MAX_LETRAS_NOMBRE] = {0};
+    char apellido_ingresado[MAX_LETRAS_NOMBRE] = {0};
     responsable_t aux;
 
-    printf("\nIngrese el nombre del responsable: ");
-    scanf("%29s", nombre_ingresado);
+    printf("\nIngrese el nombre del responsable (o '-' para omitir): ");
+    scanf(" %29[^\n]", nombre_ingresado);
+    limpiar_buffer();
+
+    printf("Ingrese el apellido del responsable (o '-' para omitir): ");
+    scanf(" %29[^\n]", apellido_ingresado);
     limpiar_buffer();
 
     send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+    send(socket_fd, apellido_ingresado, MAX_LETRAS_NOMBRE, 0);
 
     recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
     while (estado == RECORRIENDO) {
@@ -305,7 +398,7 @@ void ConsultarResponsablePorNombre_Menu1(int socket_fd){
     recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
 
     if (resultado_funcion == 0) {
-        printf("\nNo existe ese nombre en la lista de responsables. Vuelva a intentarlo.\n");
+        printf("\nNo existen responsables con esos datos. Vuelva a intentarlo.\n");
     } else {
         printf("\n%d resultados de busqueda\n", resultado_funcion);
     }
@@ -324,7 +417,7 @@ void ConsultarTurnosPorPacientes_Menu1(int socket_fd){
     turnos_t aux_turno;
 
     printf("\nIngrese el nombre del paciente del cual quiere saber los turnos: ");
-    scanf("%29s", nombre_ingresado);
+    scanf(" %29[^\n]", nombre_ingresado);
     limpiar_buffer();
 
     send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
@@ -372,15 +465,21 @@ void ConsultarTurnosPorPacientes_Menu1(int socket_fd){
 */
 void ConsultarTurnosPorResponsable_Menu1(int socket_fd){
     int resultado_funcion = 0, coincidencias = 0, estado = FIN;
-    char nombre_ingresado[MAX_LETRAS_NOMBRE];
+    char nombre_ingresado[MAX_LETRAS_NOMBRE] = {0};
+    char apellido_ingresado[MAX_LETRAS_NOMBRE] = {0};
     responsable_t aux_responsable;
     turnos_t aux_turno;
 
-    printf("\nIngrese el nombre del responsable del cual quiere saber los turnos: ");
-    scanf("%29s", nombre_ingresado);
+    printf("\nIngrese el nombre del responsable (o '-' para omitir): ");
+    scanf(" %29[^\n]", nombre_ingresado);
+    limpiar_buffer();
+
+    printf("Ingrese el apellido del responsable (o '-' para omitir): ");
+    scanf(" %29[^\n]", apellido_ingresado);
     limpiar_buffer();
 
     send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+    send(socket_fd, apellido_ingresado, MAX_LETRAS_NOMBRE, 0);
 
     recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
     while (estado == RECORRIENDO) {
@@ -391,26 +490,25 @@ void ConsultarTurnosPorResponsable_Menu1(int socket_fd){
     recv(socket_fd, &coincidencias, sizeof(int), MSG_WAITALL);
 
     if (coincidencias == 0) {
-        printf("\nNo existe ese nombre en la lista de responsables. Vuelva a intentarlo.\n");
+        printf("\nNo existe ese responsable en la lista. Vuelva a intentarlo.\n");
+    } else if (coincidencias > 1) {
+        printf("\nHay %d responsables que coinciden. Especifique nombre y apellido completo.\n", coincidencias);
     } else {
-        if (coincidencias > 1) {
-            printf("\nHay %d responsables con ese nombre. Consulte por ID para distinguirlos.\n", coincidencias);
-        } else {
-            send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+        send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
+        send(socket_fd, apellido_ingresado, MAX_LETRAS_NOMBRE, 0);
 
+        recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
+        while (estado == RECORRIENDO) {
+            recv(socket_fd, &aux_turno, sizeof(turnos_t), MSG_WAITALL);
+            mostrar_turno(&aux_turno);
             recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
-            while (estado == RECORRIENDO) {
-                recv(socket_fd, &aux_turno, sizeof(turnos_t), MSG_WAITALL);
-                mostrar_turno(&aux_turno);
-                recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
-            }
-            recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
+        }
+        recv(socket_fd, &resultado_funcion, sizeof(int), MSG_WAITALL);
 
-            if (resultado_funcion == 0) {
-                printf("\nEl responsable no tiene turnos registrados.\n");
-            } else {
-                printf("\n%d resultados de busqueda\n", resultado_funcion);
-            }
+        if (resultado_funcion == 0) {
+            printf("\nEl responsable no tiene turnos registrados.\n");
+        } else {
+            printf("\n%d resultados de busqueda\n", resultado_funcion);
         }
     }
 }

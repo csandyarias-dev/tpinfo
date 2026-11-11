@@ -19,34 +19,11 @@
 //-- Prototipos --
 //----------------
 
-/**
-	\fn     int agregar_responsable(int client_fd, nodo_responsable_t **lista, int *ultimo_id);
-	\brief  Recibe los datos del cliente y agrega el responsable a la lista dinámica.
-*/
-int agregar_responsable(int client_fd, nodo_responsable_t **lista, int *ultimo_id);
-
-/**
-	\fn     int anadirordenado_r(nodo_responsable_t ** primero, responsable_t nuevo_resp);
-	\brief  Añade el responsable a la lista enlazada manteniendo el orden alfabético.
-*/
-int anadirordenado_r(nodo_responsable_t ** primero, responsable_t nuevo_resp);
-
-/**
-	\fn     int modificarResponsable(int client_fd, nodo_responsable_t **lista);
-	\brief  Recibe los datos a modificar, reubica el nodo en la lista y responde al cliente.
-*/
-int modificarResponsable(int client_fd, nodo_responsable_t **lista);
-
-/**
-	\fn     int eliminar_nodo_r(nodo_responsable_t ** lista, nodo_responsable_t * actual);
-	\brief  Libera la memoria de un nodo específico y reconecta la lista.
-*/
-int eliminar_nodo_r(nodo_responsable_t ** lista, nodo_responsable_t * actual);
-
-/**
-	\fn     int eliminarResponsable(int client_fd, nodo_responsable_t **lista);
-	\brief  Recibe el ID a eliminar, borra el nodo y responde al cliente.
-*/
-int eliminarResponsable(int client_fd, nodo_responsable_t **lista);
+int agregar_responsable(int client_fd, int *u_pac, int *ultimo_id, nodo_paciente_t **pac, nodo_responsable_t **lista, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
+int anadirordenado_r(nodo_responsable_t **lista, responsable_t nuevo_resp);
+int buscar_nodo_resp_id(nodo_responsable_t *lista, int id_buscado, nodo_responsable_t **encontrado);
+int modificarResponsable(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **lista, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
+int eliminarResponsable(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **lista, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
+int eliminar_nodo_r(nodo_responsable_t **lista, nodo_responsable_t *actual);
 
 #endif
