@@ -14,7 +14,7 @@
 //-- Defines --
 //--------------
 
-#define ARCH_CLIENTE "cfg/client.cfg"
+#define ARCH_CLIENTE "cfg/cliente.cfg"
 
 //-------------
 //-- Structs --
