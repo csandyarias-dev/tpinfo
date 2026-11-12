@@ -4,10 +4,10 @@ int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_respon
 	int id = 0, estado = ERROR;
 	turnos_t nuevo; 
 	nodo_paciente_t * paciente = NULL; 
-	int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0; // MODIFICADO: Se agrega variable am_pm
+	int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0;
 	
 	printf("Ingrese el ID del paciente: ");
-	leer_entero(&id); // MODIFICADO: Usa tu funcion leer_entero para limpiar buffer
+	leer_entero(&id);
 
 	printf("Paciente seleccionado:\n");
 	
