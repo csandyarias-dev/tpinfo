@@ -399,7 +399,8 @@ int act_archivos(nodo_paciente_t ** pac_primero, int ultimo_id_pac, nodo_respons
     act_tipos_archivos(vector_tipos, cant_tipos, ultimo_id_tipo);
     act_pacientes_archivos(pac_primero, ultimo_id_pac);
     act_resp_archivos(resp_primero, ultimo_id_resp);
-    act_turnos_archivos(turnos_primero);
+    act_turnos_archivos(turnos_primero); 
+    printf("Archivos actualizados con exito. \n");
     
     return OK;
 }
