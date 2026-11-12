@@ -148,7 +148,7 @@ int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID) {
     int cant_pacientes=0;
 
     // Abrimos el archivo en modo lectura binaria 
-    fp = fopen("dat/pacientes.dat", "rb");
+    fp = fopen(ARCH_PACIENTES, "rb");
 
     if (fp != NULL) {
         fread(ultimoPacID, sizeof(int), 1, fp);
@@ -179,7 +179,7 @@ int cargar_responsables_archivo(nodo_responsable_t ** lista, int *ultimoResponID
     int cant_responsables=0;
 
     // Abrimos el archivo en modo lectura binaria 
-    fp = fopen("dat/responsables.dat", "rb");
+    fp = fopen(ARCH_RESPONSABLES, "rb");
 
     if (fp != NULL) {
         fread(ultimoResponID, sizeof(int), 1, fp);
@@ -209,7 +209,7 @@ int cargar_turnos_archivo(nodo_turnos_t ** lista) {
     int cant_turnos=0;
 
     // Abrimos el archivo en modo lectura binaria 
-    fp = fopen("dat/turnos.dat", "rb");
+    fp = fopen(ARCH_TURNOS, "rb");
 
     if (fp != NULL) {
         
@@ -233,7 +233,7 @@ int cargar_turnos_archivo(nodo_turnos_t ** lista) {
 */
 
 int cargar_tipos_archivo(tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID) {
-    FILE * fp = fopen("dat/tipospac.lst", "r");
+    FILE * fp = fopen(ARCH_TIPOS, "r");
     tipopac_t * aux = NULL;
     char buffer[50];
     int id_temp = 0, estado = 0;
@@ -399,7 +399,8 @@ int act_archivos(nodo_paciente_t ** pac_primero, int ultimo_id_pac, nodo_respons
     act_tipos_archivos(vector_tipos, cant_tipos, ultimo_id_tipo);
     act_pacientes_archivos(pac_primero, ultimo_id_pac);
     act_resp_archivos(resp_primero, ultimo_id_resp);
-    act_turnos_archivos(turnos_primero);
+    act_turnos_archivos(turnos_primero); 
+    printf("Archivos actualizados con exito. \n");
     
     return OK;
 }
@@ -418,7 +419,7 @@ int act_pacientes_archivos(nodo_paciente_t ** primero, int ultimo_id_pac) {
     nodo_paciente_t * actual;
     int estado = 0;
     
-    fp = fopen("dat/pacientes.dat", "wb+");
+    fp = fopen(ARCH_PACIENTES, "wb+");
     
     if (fp != NULL) {
 		fwrite(&ultimo_id_pac, sizeof(int), 1, fp); 
@@ -450,7 +451,7 @@ int act_resp_archivos(nodo_responsable_t ** primero, int ultimo_id_resp) {
     nodo_responsable_t * actual;
     int estado = 0;
     
-    fp = fopen("dat/responsables.dat", "wb+"); 
+    fp = fopen(ARCH_RESPONSABLES, "wb+"); 
     
     if (fp != NULL) {
 		fwrite(&ultimo_id_resp, sizeof(int), 1, fp); 
@@ -482,7 +483,7 @@ int act_turnos_archivos(nodo_turnos_t ** primero) {
     nodo_turnos_t * actual;
     int estado = 0;
     
-    fp = fopen("dat/turnos.dat", "wb+"); 
+    fp = fopen(ARCH_TURNOS, "wb+"); 
     
     if (fp != NULL) {
         if (*primero != NULL) {
@@ -509,7 +510,7 @@ int act_turnos_archivos(nodo_turnos_t ** primero) {
 */
 
 int act_tipos_archivos(tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID) {
-    FILE * fp = fopen("dat/tipospac.lst", "w+");
+    FILE * fp = fopen(ARCH_TIPOS, "w+");
     int i = 0, estado = ERROR_ARCHIVO;
 
     if (fp != NULL) {
