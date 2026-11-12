@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
     int port = 0, listen_fd = -1, client_fd = -1, client_len = 0, error = 0;
     int u_pac = 0, u_resp = 0, cant_tipos = 0, u_tipo = 0;
     struct sockaddr_in client_data;
+    struct sigaction s;
     nodo_paciente_t *pac = NULL;
     nodo_responsable_t *resp = NULL;
     nodo_turnos_t *tur = NULL;
@@ -33,8 +34,12 @@ int main(int argc, char *argv[]) {
     }
     if (!error) {
         importar_desde_archivo(&u_pac, &u_resp, &pac, &resp, &tur, &tipos, &cant_tipos, &u_tipo);
-        signal(SIGALRM, alarma_handler);
-        siginterrupt(SIGALRM, 1);
+        s.sa_flags = 0;
+        sigemptyset(&s.sa_mask);
+        s.sa_handler = alarma_handler;
+        sigaction(SIGALRM, &s, NULL);
+        s.sa_handler = sigint_handler;
+        sigaction(SIGINT, &s, NULL);
         alarm(120);
         printf("Servidor corriendo en el puerto: %d.\n", port);
 
@@ -53,6 +58,7 @@ int main(int argc, char *argv[]) {
             }
         } 
         act_archivos(&pac, u_pac, &resp, u_resp, &tur, tipos, cant_tipos, u_tipo);
+        liberar_memoria(&pac, &resp, &tur, &tipos, cant_tipos);
         printf("\nServidor cerrado correctamente. Archivos actualizados.\n");
         close(listen_fd);
     }

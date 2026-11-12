@@ -73,20 +73,22 @@ void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **p
             flag_alarma = 0;
         }
         bytes_recibidos = recv(client_fd, &comando, sizeof(int), 0);
-        if (bytes_recibidos <= 0) {
-            if (flag_alarma) {
+        if (bytes_recibidos < 0) {
+            if (flag_alarma && !flag_ctrlc) {
                 act_archivos(pac, *u_pac, resp, *u_resp, tur, *tipos, *cant_t, *u_tipo);
                 flag_alarma = 0;
-            } 
-            else conectado = 0;
-        } else if (comando == CMD_SALIR) {
+            } else {
+                conectado = 0;
+            }
+        } else if (bytes_recibidos == 0 || comando == CMD_SALIR) {
             act_archivos(pac, *u_pac, resp, *u_resp, tur, *tipos, *cant_t, *u_tipo);
+            flag_alarma = 0;
             conectado = 0;
         } else {
             ejecutar_comando_servidor(client_fd, comando, u_pac, u_resp, pac, resp, tur, tipos, cant_t, u_tipo);
         }
     }
-} 
+}
 
 /**
 	\fn      int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID)
@@ -382,10 +384,20 @@ int aniadir_ordenado_t(nodo_turnos_t **lista, turnos_t nuevo) {
 void alarma_handler(int nsig) {	
 	flag_alarma=1;
 	alarm(120); 
-	signal(SIGALRM, alarma_handler);
-	siginterrupt(SIGALRM, 1);
 	}
 	
+	/**
+	\fn    	 sigint_handler(int nsig)
+	\brief   setea la flag de salir en 1
+	\author  <Apellido y Nombre (mail)>
+	\date    <Año.Mes.Día>
+	\param   int nsig
+	\return  void
+*/
+
+void sigint_handler(int nsig) {
+    flag_ctrlc = 1;
+}
 /**
 	\fn    	 int act_archivos(nodo_paciente_t ** pac_primero, nodo_responsable_t ** resp_primero, nodo_turnos_t ** turnos_primero, tipopac_t * vector_tipos, int cant_tipos, int ultimo_id_tipo) 
 	\brief   actualiza los archivos con los datos actuales

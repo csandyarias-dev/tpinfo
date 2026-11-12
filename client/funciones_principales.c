@@ -113,7 +113,7 @@ int agregar_turno(int socket_fd) {
             nuevo.pacID = id;
             nuevo.responID = paciente.responID;
 
-            printf("Ingrese la fecha siguiendo el siguiente formato: DIA-MES-ANIO: ");
+            printf("Ingrese la fecha siguiendo el siguiente formato: DIA-MES-AÑO: ");
             scanf("%d-%d-%d", &dia, &mes, &anio);
             limpiar_buffer();
             nuevo.fecha.bits1.dia = dia;

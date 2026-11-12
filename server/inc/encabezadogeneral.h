@@ -279,7 +279,15 @@ int aniadir_ordenado_t(nodo_turnos_t **lista, turnos_t nuevo);
 
 void alarma_handler(int nsig);
 
-
+	/**
+	\fn    	 sigint_handler(int nsig)
+	\brief   setea la flag de salir en 1
+	\author  <Apellido y Nombre (mail)>
+	\date    <Año.Mes.Día>
+	\param   int nsig
+	\return  void
+*/
+void sigint_handler(int nsig);
 
 /**
 	\fn    	 int act_archivos(nodo_paciente_t ** pac_primero, nodo_responsable_t ** resp_primero, nodo_turnos_t ** turnos_primero, tipopac_t * vector_tipos, int cant_tipos, int ultimo_id_tipo) 

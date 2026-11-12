@@ -13,7 +13,7 @@ int m3menu(int client_socket_fd) {
     char cadena[3][11] = {"agregado", "modificado", "eliminado"};
 
     while (loop) {
-        printf("\nIngrese:\n\t 1- Anadir paciente\n\t 2- Modificar paciente\n\t 3- Eliminar paciente\n\t 4- Volver\nOpcion: ");
+        printf("\nIngrese:\n\t 1- Añadir paciente\n\t 2- Modificar paciente\n\t 3- Eliminar paciente\n\t 4- Volver\nOpcion: ");
         if (leer_entero(&opcion) != OK) opcion = 0;
 
         if (opcion >= OPCION_AGREGAR && opcion <= OPCION_ELIMINAR) {
