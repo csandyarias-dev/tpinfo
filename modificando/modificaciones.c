@@ -101,10 +101,9 @@ int aniadir_ordenado_t(nodo_turnos_t **lista, turnos_t nuevo) {
             estado = OK;
         }
     }
-    return estado; // MODIFICADO: Se movio una llave mas afuera para que la funcion siempre tenga return al final
+    return estado; 
 }
 
-// MODIFICADO: Recibe ultimo_id_pac y ultimo_id_resp y se los pasa a las funciones de archivo
 int act_archivos(nodo_paciente_t ** pac_primero, int ultimo_id_pac, nodo_responsable_t ** resp_primero, int ultimo_id_resp, nodo_turnos_t ** turnos_primero, tipopac_t * vector_tipos, int cant_tipos, int ultimo_id_tipo) {
     // MUTEX ARCHIVOS LOCK
     act_tipos_archivos(vector_tipos, cant_tipos, ultimo_id_tipo);
@@ -123,7 +122,6 @@ int act_pacientes_archivos(nodo_paciente_t ** primero, int ultimo_id_pac) {
     fp = fopen("dat/pacientes.dat", "wb+");
     
     if (fp != NULL) {
-        // MODIFICADO: Guarda siempre el ultimo_id_pac (incluso si se borraron pacientes)
         fwrite(&ultimo_id_pac, sizeof(int), 1, fp); 
         actual = *primero; 
         while (actual != NULL) {
@@ -146,7 +144,6 @@ int act_resp_archivos(nodo_responsable_t ** primero, int ultimo_id_resp) {
     fp = fopen("dat/responsables.dat", "wb+"); 
     
     if (fp != NULL) {
-        // MODIFICADO: Guarda siempre el ultimo_id_resp (incluso si se borraron responsables)
         fwrite(&ultimo_id_resp, sizeof(int), 1, fp); 
         actual = *primero; 
         while (actual != NULL) {
