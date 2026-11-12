@@ -15,6 +15,10 @@
 //--------------
 
 extern int flag_alarma;
+#define ARCH_PACIENTES "dat/pacientes.dat"
+#define ARCH_RESPONSABLES "dat/responsables.dat"
+#define ARCH_TURNOS "dat/turnos.dat"
+#define ARCH_TIPOS "dat/tipospac.lst"
 
 //-------------
 //-- Structs --
