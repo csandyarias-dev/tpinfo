@@ -12,6 +12,7 @@
 #define BACKLOG 10
 
 int flag_alarma = 0;
+int flag_ctrlc=0;
 
 int main(int argc, char *argv[]) {
     int port = 0, listen_fd = -1, client_fd = -1, client_len = 0, error = 0;
@@ -33,10 +34,11 @@ int main(int argc, char *argv[]) {
     if (!error) {
         importar_desde_archivo(&u_pac, &u_resp, &pac, &resp, &tur, &tipos, &cant_tipos, &u_tipo);
         signal(SIGALRM, alarma_handler);
+        siginterrupt(SIGALRM, 1);
         alarm(120);
         printf("Servidor corriendo en el puerto: %d.\n", port);
 
-        while (!error) {
+        while (!error&&!flag_ctrlc) {
             if (flag_alarma) {
                 act_archivos(&pac, u_pac, &resp, u_resp, &tur, tipos, cant_tipos, u_tipo);
                 flag_alarma = 0;
@@ -49,7 +51,9 @@ int main(int argc, char *argv[]) {
                 close(client_fd);
                 printf("Conexion con cliente finalizada.\n");
             }
-        }
+        } 
+        act_archivos(&pac, u_pac, &resp, u_resp, &tur, tipos, cant_tipos, u_tipo);
+        printf("\nServidor cerrado correctamente. Archivos actualizados.\n");
         close(listen_fd);
     }
     return 0;

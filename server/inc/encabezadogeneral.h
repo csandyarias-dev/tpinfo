@@ -15,6 +15,8 @@
 //--------------
 
 extern int flag_alarma;
+extern int flag_ctrlc;
+
 #define ARCH_PACIENTES "dat/pacientes.dat"
 #define ARCH_RESPONSABLES "dat/responsables.dat"
 #define ARCH_TURNOS "dat/turnos.dat"

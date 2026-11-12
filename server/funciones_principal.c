@@ -67,7 +67,7 @@ int iniciar_socket_servidor(int port) {
 void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo) {
     int conectado = 1, comando = 0, bytes_recibidos = 0;
 
-    while (conectado) {
+    while (conectado && !flag_ctrlc) {
         if (flag_alarma) {
             act_archivos(pac, *u_pac, resp, *u_resp, tur, *tipos, *cant_t, *u_tipo);
             flag_alarma = 0;
@@ -383,6 +383,7 @@ void alarma_handler(int nsig) {
 	flag_alarma=1;
 	alarm(120); 
 	signal(SIGALRM, alarma_handler);
+	siginterrupt(SIGALRM, 1);
 	}
 	
 /**
