@@ -26,7 +26,7 @@
 //-- Defines --
 //-------------
 
-// Tipo de puntero a funcion: todas las opciones del menu comparten esta firma
+//puntero a funcion
 typedef void (*funcion_menu1_t)(int);
 
 /**
@@ -60,7 +60,7 @@ int m1menu(int socket_fd) {
         }
 
         if (opcion >= 1 && opcion <= 9) {
-            // Enviamos el comando (1 al 9) al servidor y ejecutamos la funcion del cliente
+            // enviamos el comando y ejecutamos la funcion del cliente
             send(socket_fd, &opcion, sizeof(int), 0);
             acciones_m1[opcion - 1](socket_fd);
         } else if (opcion == 10) {

@@ -347,10 +347,9 @@ int ConsultarTurnos_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_
     nodo_turnos_t *aux_turnos = *lista_turnos;
     const char *nombre_pac = NULL;
 
-    // Paso 1: Reutilizamos ConsultarCoincidencias_PacienteNombre tal como disenaste en el cliente
     coincidencias = ConsultarCoincidencias_PacienteNombre(socket_fd, u_pac, u_resp, lista_pacientes, lista_responsables, lista_turnos, tipos, cant_t, u_tipo);
 
-    // Paso 2: Si hubo 1 sola coincidencia, el cliente reenvia el nombre y le mandamos los turnos
+    // Si hubo 1 sola coincidencia, el cliente reenvia el nombre y le mandamos los turnos
     if (coincidencias == 1) {
         recv(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, MSG_WAITALL);
         nombre_ingresado[MAX_LETRAS_NOMBRE - 1] = '\0';

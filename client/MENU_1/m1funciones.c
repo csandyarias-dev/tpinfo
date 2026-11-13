@@ -406,10 +406,6 @@ void ConsultarResponsablePorNombre_Menu1(int socket_fd){
 
 //-------------------------------------------------------------
 
-/*  Servidor para esta opcion:
-        coincidencias = ConsultarCoincidencias_PacienteNombre(socket_fd, lista_pac, nombre_ingresado, NULL);
-        if (coincidencias == 1) { ConsultarTurnos_PacienteNombre(socket_fd, lista_turnos, lista_pac, nombre_ingresado, turnos_encontrados); }
-*/
 void ConsultarTurnosPorPacientes_Menu1(int socket_fd){
     int resultado_funcion = 0, coincidencias = 0, estado = FIN;
     char nombre_ingresado[MAX_LETRAS_NOMBRE];
@@ -422,7 +418,6 @@ void ConsultarTurnosPorPacientes_Menu1(int socket_fd){
 
     send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
 
-    // Pacientes que coinciden (como antes, se imprimian)
     recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
     while (estado == RECORRIENDO) {
         recv(socket_fd, &aux_paciente, sizeof(paciente_t), MSG_WAITALL);
@@ -437,7 +432,6 @@ void ConsultarTurnosPorPacientes_Menu1(int socket_fd){
         if (coincidencias > 1) {
             printf("\nHay %d pacientes con ese nombre. Consulte por ID para distinguirlos.\n", coincidencias);
         } else {
-            // Nombre unico: se reenvia el nombre para la segunda funcion del servidor
             send(socket_fd, nombre_ingresado, MAX_LETRAS_NOMBRE, 0);
 
             recv(socket_fd, &estado, sizeof(int), MSG_WAITALL);
@@ -459,10 +453,6 @@ void ConsultarTurnosPorPacientes_Menu1(int socket_fd){
 
 //-------------------------------------------------------------
 
-/*  Servidor para esta opcion:
-        coincidencias = ConsultarCoincidencias_ResponsableNombre(socket_fd, lista_resp, nombre_ingresado, NULL);
-        if (coincidencias == 1) { ConsultarTurnos_ResponsableNombre(socket_fd, lista_turnos, lista_resp, nombre_ingresado, turnos_encontrados); }
-*/
 void ConsultarTurnosPorResponsable_Menu1(int socket_fd){
     int resultado_funcion = 0, coincidencias = 0, estado = FIN;
     char nombre_ingresado[MAX_LETRAS_NOMBRE] = {0};
@@ -515,7 +505,6 @@ void ConsultarTurnosPorResponsable_Menu1(int socket_fd){
 
 //-------------------------------------------------------------
 
-/*  Servidor: ConsultarTurnos_Fecha(socket_fd, lista_turnos, fecha_ingresada, turnos_encontrados); */
 void ConsultarTurnosPorFecha_Menu1(int socket_fd){
     nfecha_t fecha_ingresada;
     turnos_t aux_turno;
@@ -573,7 +562,6 @@ void ConsultarTurnosPorFecha_Menu1(int socket_fd){
 
 //-------------------------------------------------------------
 
-/*  Servidor: MostrarListadoCompletoPacientes(socket_fd, lista_pac); */
 void MostrarListadoCompletoPacientes(int socket_fd){
     int estado = FIN;
     paciente_t aux;
@@ -595,7 +583,6 @@ void MostrarListadoCompletoPacientes(int socket_fd){
 
 //-------------------------------------------------------------
 
-/*  Servidor: MostrarListadoCompletoResponsables(socket_fd, lista_resp); */
 void MostrarListadoCompletoResponsable(int socket_fd){
     int estado = FIN;
     responsable_t aux;
