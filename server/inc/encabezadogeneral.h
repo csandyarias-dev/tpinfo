@@ -157,35 +157,45 @@ enum COMANDOS_SOCKET {
 //----------------
 
 /**
-	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
-	\brief  Se carga un paciente al archivo
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
+	\fn     int iniciar_socket_servidor(int port);
+	\brief  Inicia el socket del servidor
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param  int port
+	\return listen_socket_fd
 */
-
 int iniciar_socket_servidor(int port);
+
 
 /**
 	\fn     void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
-	\brief  Se carga un paciente al archivo
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
+	\brief  Recibe las instrucciones del cliente mientras queda atento a la alarma
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param  int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo
+	\return void
 */
 void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
 
 
+/**
+	\fn     int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
+	\brief  
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param  int client_fd, int comando, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo
+	\return int estado
+*/
 int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
+
 /**
 	\fn     int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
 	\brief  Se carga un paciente al archivo
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param  nodo_paciente_t ** lista, int *ultimoPacID
+	\return int cant_pacientes
 */
 int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
 
@@ -193,161 +203,162 @@ int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID);
 /**
 	\fn    int cargar_responsables_archivo(nodo_responsable_t ** lista, int *ultimoResponID);
 	\brief  Se carga un responsable al archivo
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param  nodo_responsable_t ** lista, int *ultimoResponID
+	\return int cant_responsables
 */
 int cargar_responsables_archivo(nodo_responsable_t ** lista, int *ultimoResponID);
 
 
 /**
 	\fn     int cargar_turnos_archivo(nodo_turnos_t ** lista);
-	\brief  Se carga un turno al archivo
-	\author Grupo Las Marmotas
-	\date   2026.09.02
-	\param  int ultimo_id, nodo_paciente_t ** primero_pac, nodo_responsable_t **  primero_resp, nodo_turnos_t ** primero_turnos
-	\return int estado
+	\brief  Actualiza la lista de turnos desde el archivo
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param  nodo_turnos_t ** lista
+	\return int cant_turnos
 */
 int cargar_turnos_archivo(nodo_turnos_t ** lista);
 
+
 /**
 	\fn      cargar_tipos_archivo(tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID)
-	\brief   actualiza el vector dinamico de tipos desde el archivo
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\brief   Actualiza el vector dinamico de tipos desde el archivo
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
 	\param   tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID
-	\return  int tipos_cargados
+	\return  int estado
 */
-
 int cargar_tipos_archivo(tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID);
+
 
 /**
 	\fn      importar_desde_archivo(int * ultimo_id_pac, int * ultimo_id_resp, nodo_paciente_t ** primero_pac, nodo_responsable_t ** primero_resp, nodo_turnos_t ** primero_turnos)
-	\brief   importa todos los datos de los distintos archivos
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID
-	\return  int tipos_cargados
+	\brief   Importa todos los datos de los distintos archivos
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param   int * ultimo_id_pac, int * ultimo_id_resp, nodo_paciente_t ** primero_pac, nodo_responsable_t ** primero_resp, nodo_turnos_t ** primero_turnos, tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_id_tipo
+	\return  int estado
 */
-
-
 int importar_desde_archivo(int * ultimo_id_pac, int * ultimo_id_resp, nodo_paciente_t ** primero_pac, nodo_responsable_t ** primero_resp, nodo_turnos_t ** primero_turnos, tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_id_tipo);
  
 
 /**
 	\fn      int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo)
-	\brief   agrega un turno
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\brief   Agrega un turno
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
 	\param   int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo
 	\return  int estado
 */
-
 int agregar_turno(int, int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo);
+
 
 /**
 	\fn      int comparar_fecha_hora(turnos_t a, turnos_t b)
-	\brief   comparar fecha y hora (desendentemente)
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\brief   Comparar fecha y hora (desendentemente)
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
 	\param   turnos_t a, turnos_t b
 	\return  int resultado
 */
-
 int comparar_fecha_hora(turnos_t a, turnos_t b);
+
 
 /**
 	\fn      int aniadir_ordenado_t(nodo_turnos_t **lista, turnos_t nuevo)
-	\brief   añade un turno de forma ordenada
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\brief   Añade un turno de forma ordenada
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
 	\param   nodo_turnos_t **lista, turnos_t nuevo
 	\return  int estado
 */	
-
 int aniadir_ordenado_t(nodo_turnos_t **lista, turnos_t nuevo);
+
 
 	/**
 	\fn    	 void alarma_handler(int nsig)
-	\brief   setea la flag de actualizacion de archivos en 1
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\brief   Setea la flag de actualizacion de archivos en 1
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
 	\param   int nsig
 	\return  void
 */
-
 void alarma_handler(int nsig);
+
 
 	/**
 	\fn    	 sigint_handler(int nsig)
-	\brief   setea la flag de salir en 1
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\brief   Setea la flag de salir en 1
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
 	\param   int nsig
 	\return  void
 */
 void sigint_handler(int nsig);
 
+
 /**
 	\fn    	 int act_archivos(nodo_paciente_t ** pac_primero, nodo_responsable_t ** resp_primero, nodo_turnos_t ** turnos_primero, tipopac_t * vector_tipos, int cant_tipos, int ultimo_id_tipo) 
-	\brief   actualiza los archivos con los datos actuales
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_turnos_t **lista, turnos_t nuevo
-	\return  int estado
+	\brief   Actualiza los archivos con los datos actuales
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param   nodo_paciente_t ** pac_primero, int ultimo_id_pac, nodo_responsable_t ** resp_primero, int ultimo_id_resp, nodo_turnos_t ** turnos_primero, tipopac_t * vector_tipos, int cant_tipos, int ultimo_id_tipo
+	\return  OK
 */
-	
 int act_archivos(nodo_paciente_t ** pac_primero, int ultimo_id_pac, nodo_responsable_t ** resp_primero, int ultimo_id_resp, nodo_turnos_t ** turnos_primero, tipopac_t * vector_tipos, int cant_tipos, int ultimo_id_tipo);
+
+
 /**
-	\fn    	 int act_pacientes_archivos(nodo_paciente_t ** primero) 
-	\brief   actualiza el archivo pacientes.dat
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_paciente_t ** primero
+	\fn     int act_pacientes_archivos(nodo_paciente_t ** primero, int ultimo_id) 
+	\brief   Actualiza el archivo pacientes.dat
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param   nodo_paciente_t ** primero, int ultimo_id
 	\return  int estado
 */
-
 int act_pacientes_archivos(nodo_paciente_t ** primero, int ultimo_id);
+
 
 /**
 	\fn    	 int act_resp_archivos(nodo_responsable_t ** primero)
-	\brief   actualiza el archivo responsables.dat
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_responsable_t ** primero
+	\brief   Actualiza el archivo responsables.dat
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param   nodo_responsable_t ** primero, int ultimo_id
 	\return  int estado
 */
-
 int act_resp_archivos(nodo_responsable_t ** primero, int ultimo_id);
+
 
 /**
 	\fn    	 int act_turnos_archivos(nodo_turnos_t ** primero)
-	\brief   actualiza el archivo turnos.dat
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_responsable_t ** primero
+	\brief   Actualiza el archivo turnos.dat
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param   nodo_turnos_t ** primero
 	\return  int estado
 */
-    
 int act_turnos_archivos(nodo_turnos_t ** primero);
+
 
 /**
 	\fn    	 int act_tipos_archivos(tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID)
-	\brief   actualiza el archivo tipospac.lst
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\brief   Actualiza el archivo tipospac.lst
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
 	\param   tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID
 	\return  int estado
 */
-
 int act_tipos_archivos(tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID);
+
 
 /**
 	\fn    	 void liberar_memoria(nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** tur, tipopac_t ** tipos, int cant_tipos)
-	\brief   libera la memoria usada por el programa
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
+	\brief   Libera la memoria usada por el programa
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
 	\param   nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** tur, tipopac_t ** tipos, int cant_tipos
 	\return  void
 */

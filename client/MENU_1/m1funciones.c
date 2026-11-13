@@ -20,16 +20,6 @@
 #define FIN 0
 #endif
 
-
-/**
-	\fn     int es_hora_valida(int hora, int min, int am_pm)
-	\brief  Chequea que la hora sea valida
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  int hora, int min, int am_pm
-	\return 1 si la hora es valida, 0 si no
-*/
-
 int es_hora_valida(int hora, int min, int am_pm) {
     int valida = 0;
 
@@ -42,14 +32,6 @@ int es_hora_valida(int hora, int min, int am_pm) {
 
 //-------------------------------------------------------------
 
-/**
-	\fn     int es_fecha_valida(nfecha_t f);
-	\brief  Chequea que la fecha exista (contempla años bisiestos)
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  f: fecha a chequear
-	\return 1 si la fecha es valida, 0 si no
-*/
 int es_fecha_valida(nfecha_t f) {
     int dias_mes[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int valida = 0, dias_max = 0, bisiesto = 0;
@@ -70,17 +52,7 @@ int es_fecha_valida(nfecha_t f) {
     return valida;
 } 
 
-
 //-------------------------------------------------------------
-
-/**
-	\fn     void mostrar_paciente(paciente_t * actual)
-	\brief  Imprime el paciente
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  paciente_t * actual
-	\return void
-*/
 
 void mostrar_paciente(paciente_t * actual) {
     if (actual != NULL) {
@@ -96,15 +68,6 @@ void mostrar_paciente(paciente_t * actual) {
 
 //-------------------------------------------------------------
 
-/**
-	\fn     void mostrar_responsable(responsable_t * actual)
-	\brief  Imprime el responsable
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  responsable_t * actual
-	\return void
-*/
-
 void mostrar_responsable(responsable_t * actual) {
     if (actual != NULL) {
         printf("Resp ID: %d | Nombre: %s %s | Tel: %lu\n",
@@ -117,29 +80,11 @@ void mostrar_responsable(responsable_t * actual) {
 
 //-------------------------------------------------------------
 
-/**
-	\fn     void imprimir_fecha(nfecha_t f) 
-	\brief  Imprime la fecha 
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  nfecha_t f
-	\return void
-*/
-
 void imprimir_fecha(nfecha_t f) {
     printf("%02d-%02d-%04d", f.bits1.dia, f.bits1.mes, f.bits1.anio);
 } 
 
 //-------------------------------------------------------------
-
-/**
-	\fn     void imprimir_hora(nhora_t h) 
-	\brief  Imprime la hora
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  nhora_t h
-	\return void
-*/
 
 void imprimir_hora(nhora_t h) {
     const char *periodo;
@@ -156,15 +101,6 @@ void imprimir_hora(nhora_t h) {
 
 //-------------------------------------------------------------
 
-/**
-	\fn     void imprimir_fecha_hora(nfecha_t f, nhora_t h) 
-	\brief  Imprime la fecha y la hora
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  nfecha_t f, nhora_t h
-	\return void
-*/
-
 void imprimir_fecha_hora(nfecha_t f, nhora_t h) {
     imprimir_fecha(f);
     printf(" ");
@@ -172,15 +108,6 @@ void imprimir_fecha_hora(nfecha_t f, nhora_t h) {
 } 
 
 //-------------------------------------------------------------
-
-/**
-	\fn     void mostrar_turno(turnos_t * actual);
-	\brief  Imprime el turno
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  turnos_t * actual
-	\return void
-*/
 
 void mostrar_turno(turnos_t * actual) {
     if (actual != NULL) {
@@ -194,14 +121,6 @@ void mostrar_turno(turnos_t * actual) {
 
 //-------------------------------------------------------------
 
-/**
-	\fn     int coincide_responsable(responsable_t r, const char *nom, const char *ape);
-	\brief  Verifica si el responsable coincide por nombre y/o apellido (insensible a mayusculas)
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  responsable_t r, const char *nom, const char *ape
-	\return int coincide
-*/
 int coincide_responsable(responsable_t r, const char *nom, const char *ape) {
     int coincide = 0, evaluar_nom = 0, evaluar_ape = 0;
 
@@ -221,14 +140,6 @@ int coincide_responsable(responsable_t r, const char *nom, const char *ape) {
 
 //-------------------------------------------------------------
 
-/**
-	\fn     void limpiar_buffer(void);
-	\brief  Descarta lo que quedo en el buffer de entrada hasta el salto de linea
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  No recibe parametros
-	\return No retorna
-*/
 void limpiar_buffer(void) {
     int c = getchar();
 
@@ -237,17 +148,8 @@ void limpiar_buffer(void) {
     }
 }
 
-
 //-------------------------------------------------------------
 
-/**
-	\fn     int leer_entero(int * valor);
-	\brief  Lee un numero entero por teclado y chequea que sea un numero
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  valor: puntero donde se guarda el numero leido
-	\return 1 si se leyo un numero, 0 si no
-*/
 int leer_entero(int * valor) {
     int es_numero = 0;
 
@@ -261,14 +163,6 @@ int leer_entero(int * valor) {
 
 //-------------------------------------------------------------
 
-/**
-	\fn     int leer_uchar(int * valor);
-	\brief  Lee un unsigned char por teclado y chequea que sea un unsigned char
-	\author Las Marmotas
-	\date   2026.10.29
-	\param  valor: puntero donde se guarda el uchar leido
-	\return 1 si se leyo un numero, 0 si no
-*/
 int leer_uchar(unsigned char * valor) {
     int es_numero = 0;
 

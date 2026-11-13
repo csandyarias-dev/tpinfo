@@ -77,7 +77,7 @@ int pedir_modificacion_pac(paciente_t *pac);
 
 /**
 	\fn     int modificar_paciente(int socket_fd);
-	\brief  Se modifica al paciente
+	\brief  Se modifica al paciente en el servidor
 	\author Grupo Las Marmotas
 	\date   2026.11.13
 	\param  int socket_fd

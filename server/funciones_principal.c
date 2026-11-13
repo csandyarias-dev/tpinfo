@@ -10,15 +10,6 @@
 #include "inc/encabezadogeneral.h"
 
 
-/**
-	\fn      int iniciar_socket_servidor(int port)
-	\brief   inicia el socket del servidor
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   int port
-	\return  int listen_socket_fd
-*/
-
 int iniciar_socket_servidor(int port) {
     int listen_socket_fd = -1, status = 0, enable = 1, error = 0;
     struct sockaddr_in server_data;
@@ -54,16 +45,6 @@ int iniciar_socket_servidor(int port) {
     return listen_socket_fd;
 }
 
-/**
-	\fn      void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo)
-	\brief   recibe las instrucciones del cliente mientras queda atento a la alarma
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_paciente_t ** lista
-	\param   int *ultimoPacID
-	\return  int pacientes_cargados
-*/
-
 void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo) {
     int conectado = 1, comando = 0, bytes_recibidos = 0;
 
@@ -89,17 +70,6 @@ void atender_cliente(int client_fd, int *u_pac, int *u_resp, nodo_paciente_t **p
         }
     }
 }
-
-/**
-	\fn      int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID)
-	\brief   actualiza la lista de pacientes desde el archivo
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_paciente_t ** lista
-	\param   int *ultimoPacID
-	\return  int pacientes_cargados
-*/
-
 
 int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_resp, nodo_paciente_t **pac, nodo_responsable_t **resp, nodo_turnos_t **tur, tipopac_t **tipos, int *cant_t, int *u_tipo) {
     int estado = ERROR;
@@ -134,16 +104,6 @@ int ejecutar_comando_servidor(int client_fd, int comando, int *u_pac, int *u_res
     return estado;
 }
 
-/**
-	\fn      int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID)
-	\brief   actualiza la lista de pacientes desde el archivo
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_paciente_t ** lista
-	\param   int *ultimoPacID
-	\return  int pacientes_cargados
-*/
-
 int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID) {
     FILE *fp;
     paciente_t pacAux;
@@ -164,16 +124,6 @@ int cargar_pacientes_archivo(nodo_paciente_t ** lista, int *ultimoPacID) {
     } 
     return cant_pacientes;
 }
-
-/**
-	\fn      int cargar_responsables_archivo(nodo_responsable_t ** lista, int *ultimoResponID)
-	\brief   actualiza la lista de responsables desde el archivo
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_responsable_t ** lista
-	\param   int *ultimoResponID
-	\return  int responsables_cargados
-*/
 
 int cargar_responsables_archivo(nodo_responsable_t ** lista, int *ultimoResponID) {
     FILE *fp;
@@ -196,15 +146,6 @@ int cargar_responsables_archivo(nodo_responsable_t ** lista, int *ultimoResponID
     return cant_responsables;
 }
 
-/**
-	\fn      int cargar_turnos_archivo(nodo_turnos_t ** lista) 
-	\brief   actualiza la lista de turnos desde el archivo
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_turnos_t ** lista
-	\return  int turnos_cargados
-*/
-
 int cargar_turnos_archivo(nodo_turnos_t ** lista) {
     FILE *fp;
     turnos_t turnos_aux;
@@ -224,15 +165,6 @@ int cargar_turnos_archivo(nodo_turnos_t ** lista) {
     } 
     return cant_turnos;
 }
-
-/**
-	\fn      cargar_tipos_archivo(tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID)
-	\brief   actualiza el vector dinamico de tipos desde el archivo
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID
-	\return  int tipos_cargados
-*/
 
 int cargar_tipos_archivo(tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID) {
     FILE * fp = fopen(ARCH_TIPOS, "r");
@@ -266,16 +198,6 @@ int cargar_tipos_archivo(tipopac_t ** vector_tipos, int * cant_tipos, int * ulti
     return estado;
 }
 
-/**
-	\fn      importar_desde_archivo(int * ultimo_id_pac, int * ultimo_id_resp, nodo_paciente_t ** primero_pac, nodo_responsable_t ** primero_resp, nodo_turnos_t ** primero_turnos)
-	\brief   importa todos los datos de los distintos archivos
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_tipoID
-	\return  int tipos_cargados
-*/
-
-
 int importar_desde_archivo(int * ultimo_id_pac, int * ultimo_id_resp, nodo_paciente_t ** primero_pac, nodo_responsable_t ** primero_resp, nodo_turnos_t ** primero_turnos, tipopac_t ** vector_tipos, int * cant_tipos, int * ultimo_id_tipo) {
     int estado = OK;
     int cant_p = 0, cant_r = 0, cant_t = 0, cant_tipos_leidos = 0;
@@ -291,15 +213,6 @@ int importar_desde_archivo(int * ultimo_id_pac, int * ultimo_id_resp, nodo_pacie
 
     return estado;
 }
-
-/**
-	\fn      int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo)
-	\brief   agrega un turno
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo
-	\return  int estado
-*/
 
 int agregar_turno(int client_fd, int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo){
 	int estado = ERROR;
@@ -322,15 +235,6 @@ int agregar_turno(int client_fd, int * u_pac, int * u_resp, nodo_paciente_t ** p
 			}
  return estado;
 }
-	
-/**
-	\fn      int aniadir_ordenado_t(nodo_turnos_t **lista, turnos_t nuevo)
-	\brief   añade un turno de forma ordenada
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_turnos_t **lista, turnos_t nuevo
-	\return  int estado
-*/	
 
 int aniadir_ordenado_t(nodo_turnos_t **lista, turnos_t nuevo) {
     nodo_turnos_t *agregando = NULL, *actual = NULL, *anterior = NULL;
@@ -371,42 +275,16 @@ int aniadir_ordenado_t(nodo_turnos_t **lista, turnos_t nuevo) {
    }
    return estado; 
 }
-  
-	/**
-	\fn    	 void alarma_handler(int nsig)
-	\brief   setea la flag de actualizacion de archivos en 1
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   int nsig
-	\return  void
-*/
 
 void alarma_handler(int nsig) {	
 	flag_alarma=1;
 	alarm(120); 
 	}
-	
-	/**
-	\fn    	 sigint_handler(int nsig)
-	\brief   setea la flag de salir en 1
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   int nsig
-	\return  void
-*/
 
 void sigint_handler(int nsig) {
     flag_ctrlc = 1;
 }
-/**
-	\fn    	 int act_archivos(nodo_paciente_t ** pac_primero, nodo_responsable_t ** resp_primero, nodo_turnos_t ** turnos_primero, tipopac_t * vector_tipos, int cant_tipos, int ultimo_id_tipo) 
-	\brief   actualiza los archivos con los datos actuales
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_turnos_t **lista, turnos_t nuevo
-	\return  int estado
-*/
-	
+
 int act_archivos(nodo_paciente_t ** pac_primero, int ultimo_id_pac, nodo_responsable_t ** resp_primero, int ultimo_id_resp, nodo_turnos_t ** turnos_primero, tipopac_t * vector_tipos, int cant_tipos, int ultimo_id_tipo) {
 	
     act_tipos_archivos(vector_tipos, cant_tipos, ultimo_id_tipo);
@@ -417,15 +295,6 @@ int act_archivos(nodo_paciente_t ** pac_primero, int ultimo_id_pac, nodo_respons
     
     return OK;
 }
-
-/**
-	\fn    	 int act_pacientes_archivos(nodo_paciente_t ** primero) 
-	\brief   actualiza el archivo pacientes.dat
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_paciente_t ** primero
-	\return  int estado
-*/
 
 int act_pacientes_archivos(nodo_paciente_t ** primero, int ultimo_id_pac) {
     FILE *fp;
@@ -450,15 +319,6 @@ int act_pacientes_archivos(nodo_paciente_t ** primero, int ultimo_id_pac) {
     return estado;
 } 
 
-/**
-	\fn    	 int act_resp_archivos(nodo_responsable_t ** primero)
-	\brief   actualiza el archivo responsables.dat
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_responsable_t ** primero
-	\return  int estado
-*/
-
 int act_resp_archivos(nodo_responsable_t ** primero, int ultimo_id_resp) {
     FILE *fp;
     nodo_responsable_t * actual;
@@ -482,15 +342,6 @@ int act_resp_archivos(nodo_responsable_t ** primero, int ultimo_id_resp) {
     return estado;
 }
 
-/**
-	\fn    	 int act_turnos_archivos(nodo_turnos_t ** primero)
-	\brief   actualiza el archivo turnos.dat
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   nodo_responsable_t ** primero
-	\return  int estado
-*/
-    
 int act_turnos_archivos(nodo_turnos_t ** primero) {
     FILE *fp;
     nodo_turnos_t * actual;
@@ -513,15 +364,6 @@ int act_turnos_archivos(nodo_turnos_t ** primero) {
     return estado;
 }
 
-/**
-	\fn    	 int act_tipos_archivos(tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID)
-	\brief   actualiza el archivo tipospac.lst
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID
-	\return  int estado
-*/
-
 int act_tipos_archivos(tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID) {
     FILE * fp = fopen(ARCH_TIPOS, "w+");
     int i = 0, estado = ERROR_ARCHIVO;
@@ -536,15 +378,6 @@ int act_tipos_archivos(tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipo
     }
     return estado;
 }
-
-/** HACER NOK
-	\fn    	 int act_tipos_archivos(tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID)
-	\brief   actualiza el archivo tipospac.lst
-	\author  <Apellido y Nombre (mail)>
-	\date    <Año.Mes.Día>
-	\param   tipopac_t * vector_tipos, int cant_tipos, int ultimo_tipoID
-	\return  int estado
-*/
 
 void liberar_memoria(nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** tur, tipopac_t ** tipos, int cant_tipos) {
     nodo_paciente_t * aux_p = NULL;

@@ -57,6 +57,7 @@ const char * obtener_nombre_responsable(nodo_responsable_t * lista_resp, int res
 */
 int ConsultarCoincidencias_PacienteID(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
 
+
 /**
     \fn      int ConsultarCoincidencias_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
     \brief   Recibe un nombre, busca en la lista de pacientes y envia las coincidencias
@@ -73,6 +74,7 @@ int ConsultarCoincidencias_PacienteID(int socket_fd, int *u_pac, int *u_resp, no
     \return  int Cantidad de coincidencias encontradas
 */
 int ConsultarCoincidencias_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
 
 /**
     \fn      int ConsultarCoincidencias_ResponsableID(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
@@ -91,6 +93,7 @@ int ConsultarCoincidencias_PacienteNombre(int socket_fd, int *u_pac, int *u_resp
 */
 int ConsultarCoincidencias_ResponsableID(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
 
+
 /**
     \fn      int ConsultarCoincidencias_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
     \brief   Recibe un nombre, busca en la lista de responsables y envia las coincidencias
@@ -107,6 +110,7 @@ int ConsultarCoincidencias_ResponsableID(int socket_fd, int *u_pac, int *u_resp,
     \return  int Cantidad de coincidencias encontradas
 */
 int ConsultarCoincidencias_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
 
 /**
     \fn      int ConsultarTurnos_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
@@ -125,6 +129,7 @@ int ConsultarCoincidencias_ResponsableNombre(int socket_fd, int *u_pac, int *u_r
 */
 int ConsultarTurnos_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
 
+
 /**
     \fn      int ConsultarTurnos_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
     \brief   Recibe el nombre de un responsable y envia los turnos asociados al mismo
@@ -141,6 +146,7 @@ int ConsultarTurnos_PacienteNombre(int socket_fd, int *u_pac, int *u_resp, nodo_
     \return  int Cantidad de turnos encontrados
 */
 int ConsultarTurnos_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
 
 /**
     \fn      int ConsultarTurnos_Fecha(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
@@ -159,6 +165,7 @@ int ConsultarTurnos_ResponsableNombre(int socket_fd, int *u_pac, int *u_resp, no
 */
 int ConsultarTurnos_Fecha(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
 
+
 /**
     \fn      int MostrarListadoCompletoPacientes(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
     \brief   Recorre la lista completa de pacientes y los envia al cliente
@@ -175,6 +182,7 @@ int ConsultarTurnos_Fecha(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_
     \return  int Cantidad total de pacientes enviados
 */
 int MostrarListadoCompletoPacientes(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);
+
 
 /**
     \fn      int MostrarListadoCompletoResponsables(int socket_fd, int *u_pac, int *u_resp, nodo_paciente_t **lista_pacientes, nodo_responsable_t **lista_responsables, nodo_turnos_t **lista_turnos, tipopac_t **tipos, int *cant_t, int *u_tipo);

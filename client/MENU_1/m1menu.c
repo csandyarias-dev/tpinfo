@@ -29,15 +29,6 @@
 //puntero a funcion
 typedef void (*funcion_menu1_t)(int);
 
-/**
-	\fn      void menu1(nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_turnos_t *lista_turnos);
-	\brief   Muestra el menu 1 y ejecuta la opcion elegida mediante un vector de punteros a funcion
-	\author  Las Marmotas
-	\date    2026.10.29
-	\param   int socket_fd
-	\return  No retorna
-*/
-
 int m1menu(int socket_fd) {
     int opcion = 0, loop = OK;
 

@@ -80,6 +80,15 @@ int modificarResponsable(int socket_fd);
 */
 int eliminarResponsable(int socket_fd);
 
+
+/**
+	\fn     int leer_lu(unsigned long int * valor);
+	\brief  Lee un numero entero largo (ej: numero de telefono) y protege al sistema de entradas invalidas
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param  unsigned long int * valor
+	\return int es_numero
+*/
 int leer_lu(unsigned long int * valor);
 
 #endif

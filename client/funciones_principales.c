@@ -75,15 +75,6 @@ int conectar_servidor(char *ip, int server_port) {
     return client_socket_fd;
 }
 
-/**
-	\fn      int agregar_turno(int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo)
-	\brief   agrega un turno
-	\author  TP Las Marmotas
-	\date    2026.11.13
-	\param   int * u_pac, int * u_resp, nodo_paciente_t ** pac, nodo_responsable_t ** resp, nodo_turnos_t ** turnos, tipopac_t ** tipos, int * cant_t, int * u_tipo
-	\return  int estado
-*/
-
 int agregar_turno(int socket_fd) {
     int id = 0, estado = ERROR, cmd = 0, coincidencias = 0, dato_valido = 0, flag_srv = FIN;
     int dia = 0, mes = 0, anio = 0, hora = 0, min = 0, am_pm = 0;

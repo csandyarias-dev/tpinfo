@@ -145,10 +145,58 @@ typedef int (*puntero_menu_principal_t)(int client_socket_fd);
 //-- prototipos de los 5 menus --
 //-------------------------------
 
+/**
+	\fn      void menu1(nodo_paciente_t *lista_pac, nodo_responsable_t *lista_resp, nodo_turnos_t *lista_turnos);
+	\brief   Muestra el menu 1 y ejecuta la opcion elegida mediante un vector de punteros a funcion
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param   int client_socket_fd
+	\return  OK al finalizar la ejecucion del menu y volver al menu principal
+*/
 int m1menu(int client_socket_fd);
+
+
+/**
+	\fn      int agregar_turno(int client_socket_fd)
+	\brief   Agrega un turno
+	\author  Grupo Las Marmotas
+	\date    2026.11.13
+	\param   int client_socket_fd
+	\return  int estado
+*/
 int agregar_turno(int client_socket_fd);
+
+
+/**
+	\fn      int m3menu(int client_socket_fd);
+	\brief   Muestra el menu 3 y ejecuta la opcion elegida mediante un vector de punteros a funcion
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param   int client_socket_fd
+	\return  OK al finalizar la ejecucion del menu y volver al menu principal
+*/
 int m3menu(int client_socket_fd);
+
+
+/**
+	\fn      int m4menu(int client_socket_fd);
+	\brief   Muestra el menu 4 y ejecuta la opcion elegida mediante un vector de punteros a funcion
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param   int client_socket_fd
+	\return  OK al finalizar la ejecucion del menu y volver al menu principal
+*/
 int m4menu(int client_socket_fd);
+
+
+/**
+	\fn      int m5menu(int client_socket_fd);
+	\brief   Muestra el menu 5 y ejecuta la opcion elegida mediante un vector de punteros a funcion
+	\author Grupo Las Marmotas
+	\date   2026.11.13
+	\param   int client_socket_fd
+	\return  OK al finalizar la ejecucion del menu y volver al menu principal
+*/
 int m5menu(int client_socket_fd);
 
 //--------------
@@ -166,34 +214,34 @@ int m5menu(int client_socket_fd);
 //----------------
 
 /**
-	\fn     
-	\brief  Se 
+	\fn     int obtener_ip_puerto(int cant, char *argv[], char *ip, int *puerto);
+	\brief  Obtiene la direccion IP y el puerto por medio del archivo de configuracion (cfg/cliente.cfg) o de los argumentos de la terminal
 	\author Grupo Las Marmotas
 	\date   2026.11.13
-	\param  
-	\return int 
+	\param  int cant, char *argv[], char *ip, int *puerto
+	\return int error = (0 si se leyó y guardó exitosamente la direccion IP y el puerto, de lo contrario 1)
 */
 int obtener_ip_puerto(int cant, char *argv[], char *ip, int *puerto);
 
 
 /**
-	\fn     
-	\brief  Se 
+	\fn     int conectar_servidor(char *ip, int server_port);
+	\brief  Se conecta al servidor, devolviendo un numero positivo en caso de éxito, o de lo contrario uno negativo
 	\author Grupo Las Marmotas
 	\date   2026.11.13
-	\param  
-	\return int 
+	\param  char *ip, int server_port
+	\return int client_socket_fd = (un numero positivo ej. 3, 4, 5... si la conexion fue exitosa, -1 si fue imposible establecer la conexion)
 */
 int conectar_servidor(char *ip, int server_port);
 
 
 /**
-	\fn     
-	\brief  Se 
+	\fn     int agregar_turno(int client_socket_fd);
+	\brief  
 	\author Grupo Las Marmotas
 	\date   2026.11.13
-	\param  
-	\return int 
+	\param  int client_socket_fd
+	\return int estado
 */
 int agregar_turno(int client_socket_fd);
       
